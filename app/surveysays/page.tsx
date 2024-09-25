@@ -3,11 +3,10 @@
 import { useState, KeyboardEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
 
 export default function Component() {
-  const [word, setWord] = useState("Sunshine")
+  const word = "Sunshine"
   const [description, setDescription] = useState("")
   const [rarityScore, setRarityScore] = useState<number | null>(null)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -23,10 +22,10 @@ export default function Component() {
     // In a real application, this would be an API call to check the rarity of the description
     if (description && !isSubmitted) {
       // ... rest of the function
-    
-    const simulatedRarityScore = Math.floor(Math.random() * 100) + 1
-    setRarityScore(simulatedRarityScore)
-    setIsSubmitted(true)
+
+      const simulatedRarityScore = Math.floor(Math.random() * 100) + 1
+      setRarityScore(simulatedRarityScore)
+      setIsSubmitted(true)
     }
   }
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -76,18 +75,18 @@ export default function Component() {
             <h3 className="text-xl font-semibold text-center">Rarity Score</h3>
             {/* <Progress value={rarityScore} className="w-full" /> */}
             <div className="w-full bg-gray-200 rounded-full h-3">
-  <div
-    className={cn("h-3 rounded-full transition-all duration-500", getProgressBarColor(rarityScore))}
-    style={{ width: `${rarityScore}%` }}
-  ></div>
-</div>
+              <div
+                className={cn("h-3 rounded-full transition-all duration-500", getProgressBarColor(rarityScore))}
+                style={{ width: `${rarityScore}%` }}
+              ></div>
+            </div>
             <p className="text-center text-2xl font-bold">{rarityScore}%</p>
             <p className="text-center text-gray-600">
               {rarityScore < 45
                 ? "Common description. Try to be more creative!"
                 : rarityScore < 90
-                ? "Interesting description! You're on the right track."
-                : "Wow! That's a unique way to describe it!"}
+                  ? "Interesting description! You're on the right track."
+                  : "Wow! That's a unique way to describe it!"}
             </p>
             <Button onClick={handleNextMode} className="w-full">
               Next Mode

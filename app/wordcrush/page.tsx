@@ -41,7 +41,7 @@ export default function WordCrushSaga() {
         setGameWon(grid.every(row => row.every(cell => cell === null)))
 
     }
-  }, [])
+  }, [grid, score])
 
   const handleCellClick = (row: number, col: number) => {
     if (grid[row][col] === null) return // Ignore clicks on empty cells
@@ -156,7 +156,7 @@ export default function WordCrushSaga() {
           {isGameWon && (
             <div className="text-center">
               <h2 className="text-2xl font-bold text-green-600 mb-2">Congratulations!</h2>
-              <p>You've cleared all the letters. Final score: {score}</p>
+              <p>You&apos;ve cleared all the letters. Final score: {score}</p>
             </div>
           )}
         </CardContent>
