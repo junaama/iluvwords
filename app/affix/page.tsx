@@ -105,8 +105,8 @@ export default function NeologismDefiner() {
             <p>Score: {score}</p>
           </div>
           <div className="mt-4 text-sm text-gray-600">
-            <p>Hint: Consider the meaning of "{neologism.affix.prefix || neologism.affix.suffix}" 
-              ({neologism.affix.meaning}) and how it modifies "{neologism.baseWord}".</p>
+            <p>Hint: Consider the meaning of &quot;{neologism.affix.prefix || neologism.affix.suffix}&quot; 
+              ({neologism.affix.meaning}) and how it modifies &quot;{neologism.baseWord}&quot;.</p>
           </div>
         </CardContent>
       </Card>
