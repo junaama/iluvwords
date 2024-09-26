@@ -35,12 +35,12 @@ export const WordProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
         // Function to get word of the day
-        function getWordOfTheDay() {
+        // function getWordOfTheDay() {
             const today = new Date();
             const dayOfMonth = today.getDate() - 1; // 0-indexed
-            return words[dayOfMonth % words.length];
-        }
-        setWordOfTheDay(getWordOfTheDay())
+            // return words[dayOfMonth % words.length];
+        // }
+        setWordOfTheDay(words[dayOfMonth % words.length])
     }, [])
 
     return (

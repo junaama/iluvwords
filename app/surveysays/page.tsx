@@ -4,9 +4,10 @@ import { useState, KeyboardEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+import { useWordContext } from "@/context/word-context"
 
 export default function Component() {
-  const word = "Sunshine"
+  const { wordOfTheDay } = useWordContext()
   const [description, setDescription] = useState("")
   const [rarityScore, setRarityScore] = useState<number | null>(null)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -49,7 +50,7 @@ export default function Component() {
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-3xl font-bold text-center mb-6">{mode}</h1>
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-center">{word}</h2>
+          <h2 className="text-2xl font-semibold text-center">{wordOfTheDay}</h2>
           <p className="text-gray-600 text-center mt-2">Describe what this word would {mode.toLowerCase()} like</p>
         </div>
         <div className="space-y-4">
@@ -58,7 +59,7 @@ export default function Component() {
             placeholder="Enter your taste description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyUp={handleKeyPress}
             disabled={isSubmitted}
             className="w-full"
           />

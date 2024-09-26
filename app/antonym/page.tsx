@@ -4,17 +4,19 @@ import { useState, useEffect, useCallback, KeyboardEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
+import { useWordContext } from "@/context/word-context"
 
 // This would typically come from an API or a larger dataset
 const wordAntonyms: { [key: string]: string[] } = {
-  "big": ["small", "tiny", "minuscule", "puny", "insignificant", "minim", "diminutive"],
-  "happy": ["sad", "unhappy", "depressed", "miserable", "glum", "melancholy", "despondent"],
-  "fast": ["slow", "sluggish", "lethargic", "dull", "languid", "torpid", "sedentary"]
+  "one": ["small", "tiny", "minuscule", "puny", "insignificant", "minim", "diminutive"],
+  "two": ["sad", "unhappy", "depressed", "miserable", "glum", "melancholy", "despondent"],
+  "three": ["slow", "sluggish", "lethargic", "dull", "languid", "torpid", "sedentary"]
 }
 
 export default function Component() {
+  const {wordOfTheDay} = useWordContext()
   const [currentWord, setCurrentWord] = useState("")
-  const [synonyms, setAntonyms] = useState<string[]>([])
+  const [antonyms, setAntonyms] = useState<string[]>([])
   const [guessedAntonyms, setGuessedAntonyms] = useState<string[]>([])
   const [input, setInput] = useState("")
   const [timeLeft, setTimeLeft] = useState(60)
@@ -22,10 +24,10 @@ export default function Component() {
   const [gameActive, setGameActive] = useState(false)
 
   const startGame = useCallback(() => {
-    const words = Object.keys(wordAntonyms)
-    const randomWord = words[Math.floor(Math.random() * words.length)]
-    setCurrentWord(randomWord)
-    setAntonyms(wordAntonyms[randomWord])
+    // const words = Object.keys(wordAntonyms)
+    // const randomWord = words[Math.floor(Math.random() * words.length)]
+    // setCurrentWord(randomWord)
+    setAntonyms(wordAntonyms["one"])
     setGuessedAntonyms([])
     setInput("")
     setTimeLeft(60)
@@ -49,13 +51,13 @@ export default function Component() {
 
   const handleGuess = useCallback(() => {
     const guess = input.toLowerCase().trim()
-    if (synonyms.includes(guess) && !guessedAntonyms.includes(guess)) {
+    if (antonyms.includes(guess) && !guessedAntonyms.includes(guess)) {
         setGuessedAntonyms([...guessedAntonyms, guess])
       setScore(score + 1)
       setTimeLeft(timeLeft + 2)
     }
     setInput("")
-  }, [input, synonyms, guessedAntonyms, score, timeLeft])
+  }, [input, antonyms, guessedAntonyms, score, timeLeft])
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -74,7 +76,7 @@ export default function Component() {
         ) : (
           <>
             <div className="mb-4">
-              <h2 className="text-2xl font-semibold text-center">{currentWord}</h2>
+              <h2 className="text-2xl font-semibold text-center">{wordOfTheDay}</h2>
               <p className="text-gray-600 text-center mt-2">Guess as many antonyms as you can!</p>
             </div>
             <div className="mb-4">
@@ -107,9 +109,9 @@ export default function Component() {
           <div className="mt-6">
             <h3 className="text-xl font-semibold text-center">Game Over!</h3>
             <p className="text-center mt-2">Your final score: {score}</p>
-            <Button onClick={startGame} className="w-full mt-4">
+            {/* <Button onClick={startGame} className="w-full mt-4">
               Play Again
-            </Button>
+            </Button> */}
           </div>
         )}
       </div>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useWordContext } from "@/context/word-context"
 
 // This is a simplified semantic dissimilarity calculation
 // In a real implementation, you'd use a proper word embedding model
@@ -16,9 +17,10 @@ const calculateDissimilarity = (word1: string, word2: string): number => {
   return 100 - ((intersection.size / union.size) * 100)
 }
 
-const targetWords = ["apple", "computer", "elephant", "happiness", "ocean"]
+// const targetWords = ["apple", "computer", "elephant", "happiness", "ocean"]
 
 export default function OppositeSemantleGame() {
+    const {wordOfTheDay} = useWordContext()
   const [targetWord, setTargetWord] = useState("")
   const [guesses, setGuesses] = useState<{ word: string; dissimilarity: number }[]>([])
   const [input, setInput] = useState("")
@@ -26,8 +28,8 @@ export default function OppositeSemantleGame() {
   const [bestGuess, setBestGuess] = useState<{ word: string; dissimilarity: number } | null>(null)
 
   const startGame = useCallback(() => {
-    const randomWord = targetWords[Math.floor(Math.random() * targetWords.length)]
-    setTargetWord(randomWord)
+    // const randomWord = targetWords[Math.floor(Math.random() * targetWords.length)]
+    // setTargetWord(randomWord)
     setGuesses([])
     setInput("")
     setGameOver(false)
@@ -37,7 +39,7 @@ export default function OppositeSemantleGame() {
   const handleGuess = useCallback(() => {
     const guess = input.toLowerCase().trim()
     if (guess && !guesses.some(g => g.word === guess)) {
-      const dissimilarity = calculateDissimilarity(guess, targetWord)
+      const dissimilarity = calculateDissimilarity(guess, wordOfTheDay)
       const newGuess = { word: guess, dissimilarity }
       const newGuesses = [...guesses, newGuess]
       newGuesses.sort((a, b) => b.dissimilarity - a.dissimilarity)
@@ -52,7 +54,7 @@ export default function OppositeSemantleGame() {
         setGameOver(true)
       }
     }
-  }, [input, guesses, targetWord, bestGuess])
+  }, [input, guesses, wordOfTheDay, bestGuess])
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -67,7 +69,7 @@ export default function OppositeSemantleGame() {
           <CardTitle className="text-3xl font-bold text-center">Opposite Semantle</CardTitle>
         </CardHeader>
         <CardContent>
-          {!targetWord ? (
+          {!wordOfTheDay ? (
             <Button onClick={startGame} className="w-full">
               Start Game
             </Button>
@@ -75,7 +77,7 @@ export default function OppositeSemantleGame() {
             <>
               <div className="mb-4">
                 <p className="text-gray-600 text-center">
-                  Target word: <span className="font-bold">{targetWord}</span>
+                  Target word: <span className="font-bold">{wordOfTheDay}</span>
                 </p>
                 <p className="text-gray-600 text-center mt-2">
                   Find the most semantically distant word in 10 guesses!

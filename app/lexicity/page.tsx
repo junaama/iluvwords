@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
 import { Shuffle } from "lucide-react"
+import { useWordContext } from 'context/word-context'
 
 // World-building elements and their corresponding SVG representations
 const worldElements: { [key: string]: string } = {
@@ -48,20 +49,22 @@ const shuffleWord = (word: string) => {
 }
 
 export default function AnagramWorldBuilder() {
+    const {wordOfTheDay} = useWordContext()
     const [targetWord] = useState("RAMBUNCTIOUS")
-    const [displayedWord, setDisplayedWord] = useState(targetWord)
+    const [displayedWord, setDisplayedWord] = useState(wordOfTheDay)
     const [input, setInput] = useState("")
     const [placedElements, setPlacedElements] = useState<{ [key: string]: { x: number; y: number } }>({})
     const [selectedElement, setSelectedElement] = useState<string | null>(null)
     const [grid, setGrid] = useState<string[][]>(Array(6).fill(null).map(() => Array(6).fill(null)))
+console.log("wdd", wordOfTheDay)
 
     const handleShuffle = () => {
-        setDisplayedWord(shuffleWord(targetWord))
+        setDisplayedWord(shuffleWord(wordOfTheDay))
     }
 
     const handleGuess = useCallback(() => {
         const guess = input.toUpperCase().trim()
-        if (guess && isAnagram(guess, targetWord) && worldElements[guess] && !placedElements[guess]) {
+        if (guess && isAnagram(guess, wordOfTheDay) && worldElements[guess] && !placedElements[guess]) {
             setSelectedElement(guess)
             toast({
                 title: "Valid Anagram!",
@@ -83,12 +86,12 @@ export default function AnagramWorldBuilder() {
         } else {
             toast({
                 title: "Invalid Anagram",
-                description: `${guess} is not a valid anagram of ${targetWord}.`,
+                description: `${guess} is not a valid anagram of ${wordOfTheDay}.`,
                 variant: "destructive",
             })
         }
         setInput("")
-    }, [input, targetWord, placedElements])
+    }, [input, wordOfTheDay, placedElements])
 
     const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {

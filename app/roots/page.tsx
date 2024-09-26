@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
+import { useWordContext } from 'context/word-context'
 
 type WordSet = {
   mainWord: string;
@@ -12,36 +13,41 @@ type WordSet = {
   relatedWords: string[];
 }
 
-const wordSets: WordSet[] = [
-  {
-    mainWord: "cognition",
+const wordSets: { [key: string]: WordSet } = {
+  "COGNITION": {
+    mainWord: "COGNITION",
     root: "cogn",
     relatedWords: ["recognize", "incognito", "cognizant", "precognition", "cognitive"]
   },
-  {
-    mainWord: "biology",
-    root: "bio",
-    relatedWords: ["biography", "biosphere", "symbiosis", "antibiotic", "biome"]
+  "SERENDIPITY": {
+    mainWord: "SERENDIPITY",
+    root: "serend",
+    relatedWords: ["serendipitous", "serendipitously"]
   },
-  {
-    mainWord: "telephone",
-    root: "phon",
-    relatedWords: ["symphony", "phonetic", "microphone", "phonology", "euphony"]
+  "ELOQUENT": {
+    mainWord: "ELOQUENT",
+    root: "loqu",
+    relatedWords: ["loquacious", "colloquial", "eloquence", "soliloquy", "circumlocution"]
   },
-  {
-    mainWord: "democracy",
-    root: "demo",
-    relatedWords: ["demographic", "epidemic", "demagogue", "endemic", "pandemic"]
+  "EPHEMERAL": {
+    mainWord: "EPHEMERAL",
+    root: "eph",
+    relatedWords: ["ephemera", "ephemerality", "ephemeron"]
   },
-  {
-    mainWord: "telescope",
-    root: "scop",
-    relatedWords: ["microscope", "periscope", "kaleidoscope", "endoscope", "stethoscope"]
+  "LABYRINTHINE": {
+    mainWord: "LABYRINTHINE",
+    root: "labyrinth",
+    relatedWords: ["labyrinth", "labyrinthian", "labyrinthitis"]
   }
-]
+}
 
 export default function RootWordExplorer() {
-  const [currentSet, setCurrentSet] = useState<WordSet>(wordSets[Math.floor(Math.random() * wordSets.length)])
+  const { wordOfTheDay } = useWordContext()
+  const currentSet = wordSets[wordOfTheDay] || {
+    mainWord: wordOfTheDay,
+    root: wordOfTheDay.toLowerCase().slice(0, 4), // Fallback to first 4 letters as root
+    relatedWords: []
+  }
   const [input, setInput] = useState("")
   const [foundWords, setFoundWords] = useState<string[]>([])
   const [score, setScore] = useState(0)
@@ -50,22 +56,13 @@ export default function RootWordExplorer() {
     const word = input.trim().toLowerCase()
     if (word && currentSet.relatedWords.includes(word) && !foundWords.includes(word)) {
       setFoundWords([...foundWords, word])
-      setScore(score + 1)
+      setScore(score + word.length)
       setInput("")
       toast({
         title: "Correct!",
         description: `"${word}" is related to "${currentSet.mainWord}" through the root "${currentSet.root}".`,
         variant: "default",
       })
-      if (foundWords.length + 1 === currentSet.relatedWords.length) {
-        toast({
-          title: "Congratulations!",
-          description: "You've found all related words! Moving to the next set.",
-          variant: "default",
-        })
-        setCurrentSet(wordSets[Math.floor(Math.random() * wordSets.length)])
-        setFoundWords([])
-      }
     } else if (foundWords.includes(word)) {
       toast({
         title: "Already found",
@@ -89,7 +86,7 @@ export default function RootWordExplorer() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="flex items-center justify-center p-4">
       <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-center">Root Word Explorer</CardTitle>

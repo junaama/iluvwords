@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { toast } from "@/hooks/use-toast"
+import { useWordContext } from "@/context/word-context"
 
 // This would typically come from an API or a larger dataset
 const wordsWithRhymes: { [key: string]: string[] } = {
@@ -14,6 +15,7 @@ const wordsWithRhymes: { [key: string]: string[] } = {
 }
 
 export default function RhymeTime() {
+  const { wordOfTheDay } = useWordContext()
   const [currentWord, setCurrentWord] = useState("")
   const [rhymes, setRhymes] = useState<string[]>([])
   const [guessedRhymes, setGuessedRhymes] = useState<{ word: string; correct: boolean }[]>([])
@@ -23,10 +25,10 @@ export default function RhymeTime() {
   const [gameActive, setGameActive] = useState(false)
 
   const startGame = useCallback(() => {
-    const words = Object.keys(wordsWithRhymes)
-    const randomWord = words[Math.floor(Math.random() * words.length)]
-    setCurrentWord(randomWord)
-    setRhymes(wordsWithRhymes[randomWord])
+    // const words = Object.keys(wordsWithRhymes)
+    // const randomWord = words[Math.floor(Math.random() * words.length)]
+    // setCurrentWord(randomWord)
+    setRhymes(wordsWithRhymes["cat"])
     setGuessedRhymes([])
     setInput("")
     setTimeLeft(60)
@@ -89,7 +91,7 @@ export default function RhymeTime() {
         ) : (
           <>
             <div className="mb-4">
-              <h2 className="text-2xl font-semibold text-center">{currentWord}</h2>
+              <h2 className="text-2xl font-semibold text-center">{wordOfTheDay}</h2>
               <p className="text-gray-600 text-center mt-2">List words that rhyme with this!</p>
             </div>
             <div className="mb-4">
@@ -102,7 +104,7 @@ export default function RhymeTime() {
                 placeholder="Enter a rhyming word"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyUp={handleKeyPress}
                 className="w-full"
                 aria-label="Enter a rhyming word"
               />

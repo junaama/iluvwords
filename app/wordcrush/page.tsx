@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
+import { useWordContext } from "@/context/word-context"
 
 const TARGET_WORD = "DEVELOPER"
 const GRID_SIZE = 8
@@ -30,14 +31,15 @@ const isAdjacent = (cell1: [number, number], cell2: [number, number]) => {
 }
 
 export default function WordCrushSaga() {
+  const { wordOfTheDay } = useWordContext()
   const [grid, setGrid] = useState<(string | null)[][]>(Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null)))
   const [selectedCells, setSelectedCells] = useState<[number, number][]>([])
   const [score, setScore] = useState(0)
   const [isGameWon, setGameWon] = useState(false)
 
   useEffect(() => {
-    setGrid(generateGrid(TARGET_WORD, GRID_SIZE))
-  }, [])
+    setGrid(generateGrid(wordOfTheDay, GRID_SIZE))
+  }, [wordOfTheDay])
 
   useEffect(()=> {
     if(score) {
@@ -128,7 +130,7 @@ export default function WordCrushSaga() {
           <CardTitle className="text-3xl font-bold text-center">Word Crush Saga</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-center mb-4">Target Word: {TARGET_WORD}</p>
+          <p className="text-center mb-4">Target Word: {wordOfTheDay}</p>
           <div className="grid grid-cols-8 gap-1 mb-4">
             {grid.map((row, rowIndex) =>
               row.map((letter, colIndex) => (

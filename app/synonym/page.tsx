@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, KeyboardEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
+import { useWordContext } from "@/context/word-context"
 
 // This would typically come from an API or a larger dataset
 const wordSynonyms: { [key: string]: string[] } = {
@@ -13,19 +14,21 @@ const wordSynonyms: { [key: string]: string[] } = {
 }
 
 export default function Component() {
+   const {wordOfTheDay} = useWordContext()
   const [currentWord, setCurrentWord] = useState("")
   const [synonyms, setSynonyms] = useState<string[]>([])
   const [guessedSynonyms, setGuessedSynonyms] = useState<string[]>([])
+  const [wrongGuesses, setWrongGuesses] = useState<string[]>([])
   const [input, setInput] = useState("")
   const [timeLeft, setTimeLeft] = useState(60)
   const [score, setScore] = useState(0)
   const [gameActive, setGameActive] = useState(false)
 
   const startGame = useCallback(() => {
-    const words = Object.keys(wordSynonyms)
-    const randomWord = words[Math.floor(Math.random() * words.length)]
-    setCurrentWord(randomWord)
-    setSynonyms(wordSynonyms[randomWord])
+    // const words = Object.keys(wordSynonyms)
+    // const randomWord = words[Math.floor(Math.random() * words.length)]
+    // setCurrentWord(randomWord)
+    setSynonyms(wordSynonyms["big"])
     setGuessedSynonyms([])
     setInput("")
     setTimeLeft(60)
@@ -52,7 +55,10 @@ export default function Component() {
     if (synonyms.includes(guess) && !guessedSynonyms.includes(guess)) {
       setGuessedSynonyms([...guessedSynonyms, guess])
       setScore(score + 1)
-      setTimeLeft(timeLeft + 3)
+      setTimeLeft(timeLeft + 2)
+    } else {
+      setWrongGuesses([...wrongGuesses, guess])
+      setTimeLeft(timeLeft - 2)
     }
     setInput("")
   }, [input, synonyms, guessedSynonyms, score, timeLeft])
@@ -74,7 +80,7 @@ export default function Component() {
         ) : (
           <>
             <div className="mb-4">
-              <h2 className="text-2xl font-semibold text-center">{currentWord}</h2>
+              <h2 className="text-2xl font-semibold text-center">{wordOfTheDay}</h2>
               <p className="text-gray-600 text-center mt-2">Guess as many synonyms as you can!</p>
             </div>
             <div className="mb-4">
@@ -87,17 +93,37 @@ export default function Component() {
                 placeholder="Enter a synonym"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyUp={handleKeyPress}
                 className="w-full"
               />
               <Button onClick={handleGuess} className="w-full">
                 Guess
               </Button>
             </div>
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <h3 className="font-semibold">Guessed Synonyms:</h3>
               <p>{guessedSynonyms.join(", ")}</p>
+            </div> */}
+             <div className="mt-4">
+            <h3 className="font-semibold mb-2">Guessed Synonyms:</h3>
+            <div className="flex flex-wrap gap-2">
+              {guessedSynonyms.map((synonym, index) => (
+                <span key={index} className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">
+                  {synonym}
+                </span>
+              ))}
             </div>
+          </div>
+          <div className="mt-4">
+            <h3 className="font-semibold mb-2">Wrong Guesses:</h3>
+            <div className="flex flex-wrap gap-2">
+              {wrongGuesses.map((guess, index) => (
+                <span key={index} className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm">
+                  {guess}
+                </span>
+              ))}
+            </div>
+          </div>
             <div className="mt-4">
               <h3 className="font-semibold">Score: {score}</h3>
             </div>
@@ -107,9 +133,9 @@ export default function Component() {
           <div className="mt-6">
             <h3 className="text-xl font-semibold text-center">Game Over!</h3>
             <p className="text-center mt-2">Your final score: {score}</p>
-            <Button onClick={startGame} className="w-full mt-4">
+            {/* <Button onClick={startGame} className="w-full mt-4">
               Play Again
-            </Button>
+            </Button> */}
           </div>
         )}
       </div>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
+import { useWordContext } from 'context/word-context'
 
 const affixes = [
   { prefix: "pro-", meaning: "in favor of" },
@@ -19,29 +20,23 @@ const affixes = [
   { suffix: "-aholic", meaning: "one who has a compulsion for" },
 ]
 
-const baseWords = [
-  "rambunctious", "serendipity", "eloquent", "whimsical", "tenacious",
-  "enigmatic", "mellifluous", "ephemeral", "labyrinthine", "effervescent"
-]
-
-const generateNeologism = () => {
-  const baseWord = baseWords[Math.floor(Math.random() * baseWords.length)]
+const generateNeologism = (baseWord: string) => {
   const affix = affixes[Math.floor(Math.random() * affixes.length)]
   if ('prefix' in affix) {
-    return { word: `${affix.prefix}${baseWord}`, affix, baseWord }
+    return { word: `${affix.prefix}${baseWord}`, affix }
   } else {
-    return { word: `${baseWord}${affix.suffix}`, affix, baseWord }
+    return { word: `${baseWord}${affix.suffix}`, affix }
   }
 }
 
-const validateDefinition = (definition: string, neologism: ReturnType<typeof generateNeologism>) => {
-  const { affix, baseWord } = neologism
+const validateDefinition = (definition: string, neologism: ReturnType<typeof generateNeologism>, baseWord: string) => {
+  const { affix } = neologism
   const affixMeaning = 'prefix' in affix ? affix.meaning : affix.meaning
   const lowercaseDefinition = definition.toLowerCase()
 
   // Check if the definition includes the base word or a related form
-  const includesBaseWord = lowercaseDefinition.includes(baseWord) || 
-    lowercaseDefinition.includes(baseWord.slice(0, -3)) // Check for root word without suffix
+  const includesBaseWord = lowercaseDefinition.includes(baseWord.toLowerCase()) || 
+    lowercaseDefinition.includes(baseWord.toLowerCase().slice(0, -3)) // Check for root word without suffix
 
   // Check if the definition reflects the meaning of the affix
   const reflectsAffixMeaning = affixMeaning.split(' ').some(word => 
@@ -55,12 +50,14 @@ const validateDefinition = (definition: string, neologism: ReturnType<typeof gen
 }
 
 export default function NeologismDefiner() {
-  const [neologism, setNeologism] = useState(generateNeologism())
+  const { wordOfTheDay } = useWordContext()
+  const [neologism, setNeologism] = useState(generateNeologism(wordOfTheDay))
   const [definition, setDefinition] = useState("")
   const [score, setScore] = useState(0)
+  const [attempts, setAttempts] = useState(0)
 
   const handleSubmit = useCallback(() => {
-    if (validateDefinition(definition, neologism)) {
+    if (validateDefinition(definition, neologism, wordOfTheDay)) {
       setScore(score + 1)
       toast({
         title: "Excellent!",
@@ -74,19 +71,19 @@ export default function NeologismDefiner() {
         variant: "destructive",
       })
     }
-    setNeologism(generateNeologism())
+    setAttempts(attempts + 1)
     setDefinition("")
-  }, [definition, neologism, score])
+  }, [definition, neologism, wordOfTheDay, score, attempts])
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="flex items-center justify-center p-4">
       <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-center">Neologism Definer</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-center mb-4">
-            Define the following neologism:
+            Define the following neologism based on today's word:
             <span className="font-bold text-xl block mt-2">{neologism.word}</span>
           </p>
           <div className="space-y-4">
@@ -103,10 +100,11 @@ export default function NeologismDefiner() {
           </div>
           <div className="mt-4 text-center">
             <p>Score: {score}</p>
+            <p>Attempts: {attempts}</p>
           </div>
           <div className="mt-4 text-sm text-gray-600">
-            <p>Hint: Consider the meaning of &quot;{neologism.affix.prefix || neologism.affix.suffix}&quot; 
-              ({neologism.affix.meaning}) and how it modifies &quot;{neologism.baseWord}&quot;.</p>
+            <p>Hint: Consider the meaning of "{neologism.affix.prefix || neologism.affix.suffix}" 
+              ({neologism.affix.meaning}) and how it modifies "{wordOfTheDay}".</p>
           </div>
         </CardContent>
       </Card>
