@@ -1,6 +1,6 @@
 
 export const Gamemodes = [
-    { name: "Origin", icon: "origin", link: "/origin" },
+    // { name: "Origin", icon: "origin", link: "/origin" },
     { name: "Word Crush", icon: "abc", link: "/wordcrush" },
     { name: "Semantic Run", icon: "abc", link: "/oppositesemantle" },
     { name: "Lexicity", icon: "lexicity", link: "/lexicity" },
