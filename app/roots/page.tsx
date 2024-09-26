@@ -102,7 +102,7 @@ export default function RootWordExplorer() {
               placeholder="Enter a related word"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyUp={handleKeyPress}
               className="w-full"
             />
             <Button onClick={handleSubmit} className="w-full">

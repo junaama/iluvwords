@@ -89,7 +89,7 @@ export default function OppositeSemantleGame() {
                   placeholder="Enter your guess"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={handleKeyPress}
+                  onKeyUp={handleKeyPress}
                   className="w-full"
                   aria-label="Enter your guess"
                   disabled={gameOver}
