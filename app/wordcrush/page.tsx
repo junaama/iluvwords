@@ -19,7 +19,7 @@ const generateGrid = (word: string, size: number) => {
 
 const isValidWord = (word: string) => {
   // In a real application, this would check against a dictionary API
-  const validWords = ["LOVE", "DEER", "POLE", "LEPER", "LEVER", "PEEL", "PEER", "LOPE", "ROPE", "ROLE", "OVER", "DOVE", "PROVE", "DROVE", "ROPED", "LOVED", "DEVELOP"]
+  const validWords = ["LOVE", "DEER", "POLE", "LEPER", "LEVER", "PEEL", "PEER", "LOPE", "ROPE", "ROLE", "OVER", "DOVE", "PROVE", "DROVE", "ROPED", "LOVED", "DEVELOP", "LODE", "PEE", "PER", "RED", "RODE"]
   return validWords.includes(word)
 }
 
@@ -37,11 +37,13 @@ export default function WordCrushSaga() {
 
   useEffect(() => {
     setGrid(generateGrid(TARGET_WORD, GRID_SIZE))
-    if(score){
-        setGameWon(grid.every(row => row.every(cell => cell === null)))
+  }, [])
 
+  useEffect(()=> {
+    if(score) {
+        setGameWon(grid.every(row => row.every(cell => cell === null)))
     }
-  }, [grid, score])
+  }, [score])
 
   const handleCellClick = (row: number, col: number) => {
     if (grid[row][col] === null) return // Ignore clicks on empty cells
