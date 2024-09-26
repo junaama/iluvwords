@@ -16,7 +16,6 @@ const wordsWithRhymes: { [key: string]: string[] } = {
 
 export default function RhymeTime() {
   const { wordOfTheDay } = useWordContext()
-  const [currentWord, setCurrentWord] = useState("")
   const [rhymes, setRhymes] = useState<string[]>([])
   const [guessedRhymes, setGuessedRhymes] = useState<{ word: string; correct: boolean }[]>([])
   const [input, setInput] = useState("")

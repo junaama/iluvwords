@@ -122,30 +122,30 @@ const worldElements: { [key: string]: string } = {
     "ICEBERG": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22 L22 22 L18 6 L6 6 Z" /><path d="M6 6 L2 22 M18 6 L22 22" /><path d="M6 14 L18 14" stroke="white" /></svg>`,
 }
 
-const cityBuildingBlocks = [
-    "Hall", "Pool", "Pond", "Lake", "House", "Museum", "Library", "School",
-    "Church", "Chapel", "Park", "Court", "Pillar", "Bench", "Road", "Lane",
-    "Cabin", "Garage", "Lot", "Apartment", "Skyscraper", "Office building",
-    "Factory", "Power plant", "Solar farm", "Wind turbine", "Hospital",
-    "Clinic", "Police station", "Fire station", "Airport", "Train station",
-    "Bus stop", "Subway station", "Seaport", "Marina", "Lighthouse", "Bridge",
-    "Tunnel", "Highway", "Overpass", "Parking lot", "Mall", "Supermarket",
-    "Restaurant", "Cafe", "Bar", "Nightclub", "Theater", "Cinema",
-    "Concert hall", "Stadium", "Arena", "Gym", "Zoo", "Aquarium",
-    "Botanical garden", "University", "College", "Kindergarten",
-    "Daycare center", "Retirement home", "Cemetery", "Crematorium",
-    "Synagogue", "Mosque", "Temple", "Monastery", "Courthouse", "Prison",
-    "Post office", "Bank", "Stock exchange", "Hotel", "Motel", "Resort",
-    "Campground", "Amusement park", "Water park", "Playground", "Sports field",
-    "Golf course", "Tennis court", "Basketball court", "Skateboard park",
-    "Bike lane", "Pedestrian walkway", "Fountain", "Monument", "Statue",
-    "Observatory", "Planetarium", "Warehouse", "Storage facility",
-    "Recycling center", "Waste treatment plant", "Water tower", "Dam", "Canal",
-    "Aqueduct", "Sewer system", "Electrical substation",
-    "Telecommunications tower", "Data center", "Greenhouse", "Farm", "Orchard",
-    "Vineyard", "Mine", "Quarry", "Refinery", "Brewery", "Winery", "Distillery",
-    "Bakery", "Farmers market", "Flea market", "Art gallery", "Craft workshop"
-];
+// const cityBuildingBlocks = [
+//     "Hall", "Pool", "Pond", "Lake", "House", "Museum", "Library", "School",
+//     "Church", "Chapel", "Park", "Court", "Pillar", "Bench", "Road", "Lane",
+//     "Cabin", "Garage", "Lot", "Apartment", "Skyscraper", "Office building",
+//     "Factory", "Power plant", "Solar farm", "Wind turbine", "Hospital",
+//     "Clinic", "Police station", "Fire station", "Airport", "Train station",
+//     "Bus stop", "Subway station", "Seaport", "Marina", "Lighthouse", "Bridge",
+//     "Tunnel", "Highway", "Overpass", "Parking lot", "Mall", "Supermarket",
+//     "Restaurant", "Cafe", "Bar", "Nightclub", "Theater", "Cinema",
+//     "Concert hall", "Stadium", "Arena", "Gym", "Zoo", "Aquarium",
+//     "Botanical garden", "University", "College", "Kindergarten",
+//     "Daycare center", "Retirement home", "Cemetery", "Crematorium",
+//     "Synagogue", "Mosque", "Temple", "Monastery", "Courthouse", "Prison",
+//     "Post office", "Bank", "Stock exchange", "Hotel", "Motel", "Resort",
+//     "Campground", "Amusement park", "Water park", "Playground", "Sports field",
+//     "Golf course", "Tennis court", "Basketball court", "Skateboard park",
+//     "Bike lane", "Pedestrian walkway", "Fountain", "Monument", "Statue",
+//     "Observatory", "Planetarium", "Warehouse", "Storage facility",
+//     "Recycling center", "Waste treatment plant", "Water tower", "Dam", "Canal",
+//     "Aqueduct", "Sewer system", "Electrical substation",
+//     "Telecommunications tower", "Data center", "Greenhouse", "Farm", "Orchard",
+//     "Vineyard", "Mine", "Quarry", "Refinery", "Brewery", "Winery", "Distillery",
+//     "Bakery", "Farmers market", "Flea market", "Art gallery", "Craft workshop"
+// ];
 
 const isAnagram = (input: string, target: string): boolean => {
     // Create frequency maps for input and target words
@@ -178,7 +178,6 @@ const shuffleWord = (word: string) => {
 
 export default function AnagramWorldBuilder() {
     const { wordOfTheDay } = useWordContext()
-    const [targetWord] = useState("RAMBUNCTIOUS")
     const [displayedWord, setDisplayedWord] = useState(wordOfTheDay)
     const [input, setInput] = useState("")
     const [placedElements, setPlacedElements] = useState<{ [key: string]: { x: number; y: number } }>({})

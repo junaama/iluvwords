@@ -15,7 +15,6 @@ const wordAntonyms: { [key: string]: string[] } = {
 
 export default function Component() {
   const {wordOfTheDay} = useWordContext()
-  const [currentWord, setCurrentWord] = useState("")
   const [antonyms, setAntonyms] = useState<string[]>([])
   const [guessedAntonyms, setGuessedAntonyms] = useState<string[]>([])
   const [input, setInput] = useState("")

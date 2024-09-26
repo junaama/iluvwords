@@ -21,7 +21,6 @@ const calculateDissimilarity = (word1: string, word2: string): number => {
 
 export default function OppositeSemantleGame() {
     const {wordOfTheDay} = useWordContext()
-  const [targetWord, setTargetWord] = useState("")
   const [guesses, setGuesses] = useState<{ word: string; dissimilarity: number }[]>([])
   const [input, setInput] = useState("")
   const [gameOver, setGameOver] = useState(false)

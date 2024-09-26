@@ -51,7 +51,7 @@ const validateDefinition = (definition: string, neologism: ReturnType<typeof gen
 
 export default function NeologismDefiner() {
   const { wordOfTheDay } = useWordContext()
-  const [neologism, setNeologism] = useState(generateNeologism(wordOfTheDay))
+  const neologism = generateNeologism(wordOfTheDay)
   const [definition, setDefinition] = useState("")
   const [score, setScore] = useState(0)
   const [attempts, setAttempts] = useState(0)

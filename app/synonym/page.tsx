@@ -15,7 +15,6 @@ const wordSynonyms: { [key: string]: string[] } = {
 
 export default function Component() {
    const {wordOfTheDay} = useWordContext()
-  const [currentWord, setCurrentWord] = useState("")
   const [synonyms, setSynonyms] = useState<string[]>([])
   const [guessedSynonyms, setGuessedSynonyms] = useState<string[]>([])
   const [wrongGuesses, setWrongGuesses] = useState<string[]>([])
