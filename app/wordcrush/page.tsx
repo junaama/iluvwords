@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
 import { useWordContext } from "@/context/word-context"
 
-const TARGET_WORD = "DEVELOPER"
 const GRID_SIZE = 8
 const MIN_WORD_LENGTH = 3
 
@@ -124,13 +123,12 @@ export default function WordCrushSaga() {
 
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <Card className="w-full max-w-lg">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold text-center">Word Crush Saga</CardTitle>
+          <CardTitle className="text-3xl font-bold text-center">{wordOfTheDay} </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-center mb-4">Target Word: {wordOfTheDay}</p>
           <div className="grid grid-cols-8 gap-1 mb-4">
             {grid.map((row, rowIndex) =>
               row.map((letter, colIndex) => (
