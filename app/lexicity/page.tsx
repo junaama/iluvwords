@@ -245,7 +245,7 @@ export default function AnagramWorldBuilder() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <div className="min-h-screen  flex items-center justify-center p-4">
             <Card className="w-full max-w-4xl">
                 <CardHeader>
                     <CardTitle className="text-3xl font-bold text-center">Lexicity</CardTitle>

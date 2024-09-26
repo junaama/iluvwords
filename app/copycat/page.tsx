@@ -13,7 +13,7 @@ const wordSynonyms: { [key: string]: string[] } = {
   "fast": ["quick", "speedy", "swift", "rapid", "hasty", "expeditious", "brisk"]
 }
 
-export default function Component() {
+export default function Copycat() {
    const {wordOfTheDay} = useWordContext()
   const [synonyms, setSynonyms] = useState<string[]>([])
   const [guessedSynonyms, setGuessedSynonyms] = useState<string[]>([])
@@ -69,9 +69,9 @@ export default function Component() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="min-h-screen  flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-3xl font-bold text-center mb-6">Synonym Rush</h1>
+        <h1 className="text-3xl font-bold text-center mb-6">Copycat</h1>
         {!gameActive ? (
           <Button onClick={startGame} className="w-full">
             Start Game

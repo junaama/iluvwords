@@ -19,7 +19,7 @@ const calculateDissimilarity = (word1: string, word2: string): number => {
 
 // const targetWords = ["apple", "computer", "elephant", "happiness", "ocean"]
 
-export default function OppositeSemantleGame() {
+export default function Chaser() {
     const {wordOfTheDay} = useWordContext()
   const [guesses, setGuesses] = useState<{ word: string; dissimilarity: number }[]>([])
   const [input, setInput] = useState("")
@@ -62,10 +62,10 @@ export default function OppositeSemantleGame() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen  flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold text-center">Opposite Semantle</CardTitle>
+          <CardTitle className="text-3xl font-bold text-center">Chaser</CardTitle>
         </CardHeader>
         <CardContent>
           {!wordOfTheDay ? (

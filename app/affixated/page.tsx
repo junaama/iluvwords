@@ -49,7 +49,7 @@ const validateDefinition = (definition: string, neologism: ReturnType<typeof gen
   return includesBaseWord && reflectsAffixMeaning && isLongEnough
 }
 
-export default function NeologismDefiner() {
+export default function Affixated() {
   const { wordOfTheDay } = useWordContext()
   const neologism = generateNeologism(wordOfTheDay)
   const [definition, setDefinition] = useState("")
@@ -79,11 +79,11 @@ export default function NeologismDefiner() {
     <div className="flex items-center justify-center p-4">
       <Card className="w-full max-w-lg">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold text-center">Neologism Definer</CardTitle>
+          <CardTitle className="text-3xl font-bold text-center">Affixated</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-center mb-4">
-            Define the following neologism based on today's word:
+            Define the following neologism based on today&apos;s word:
             <span className="font-bold text-xl block mt-2">{neologism.word}</span>
           </p>
           <div className="space-y-4">
@@ -103,8 +103,8 @@ export default function NeologismDefiner() {
             <p>Attempts: {attempts}</p>
           </div>
           <div className="mt-4 text-sm text-gray-600">
-            <p>Hint: Consider the meaning of "{neologism.affix.prefix || neologism.affix.suffix}" 
-              ({neologism.affix.meaning}) and how it modifies "{wordOfTheDay}".</p>
+            <p>Hint: Consider the meaning of &quot;{neologism.affix.prefix || neologism.affix.suffix}&quot; 
+              ({neologism.affix.meaning}) and how it modifies &quot;{wordOfTheDay}&quot;.</p>
           </div>
         </CardContent>
       </Card>

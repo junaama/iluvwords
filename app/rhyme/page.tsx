@@ -14,7 +14,7 @@ const wordsWithRhymes: { [key: string]: string[] } = {
   "light": ["bite", "fight", "height", "kite", "might", "night", "sight"]
 }
 
-export default function RhymeTime() {
+export default function Rhyme() {
   const { wordOfTheDay } = useWordContext()
   const [rhymes, setRhymes] = useState<string[]>([])
   const [guessedRhymes, setGuessedRhymes] = useState<{ word: string; correct: boolean }[]>([])
@@ -80,9 +80,9 @@ export default function RhymeTime() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-3xl font-bold text-center mb-6">Rhyme Time</h1>
+        <h1 className="text-3xl font-bold text-center mb-6">Rhyme</h1>
         {!gameActive ? (
           <Button onClick={startGame} className="w-full">
             Start Game
