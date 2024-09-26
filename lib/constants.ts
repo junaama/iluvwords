@@ -1,14 +1,14 @@
 
 export const Gamemodes = [
     // { name: "Origin", icon: "origin", link: "/origin" },
-    { name: "Word Crush", icon: "abc", link: "/wordcrush" },
-    { name: "Semantic Run", icon: "abc", link: "/oppositesemantle" },
+    { name: "Babel", icon: "babel", link: "/wordcrush" },
+    { name: "Chaser", icon: "chaser", link: "/oppositesemantle" },
     { name: "Lexicity", icon: "lexicity", link: "/lexicity" },
-    { name: "Antonyms", icon: "abc", link: "/antonym" },
-    { name: "Synonyms", icon: "abc", link: "/synonym" },
-    { name: "Rhyme", icon: "abc", link: "/rhyme" },
-    { name: "Survey Says", icon: "abc", link: "/surveysays" },
-    { name: "Affix", icon: "abc", link: "/affix"},
-    { name: "Roots", icon: "abc", link: "/roots"}
+    { name: "Antsy", icon: "antsy", link: "/antonym" },
+    { name: "Copycat", icon: "copycat", link: "/synonym" },
+    { name: "Rhyme", icon: "rhyme", link: "/rhyme" },
+    { name: "Survey Senses", icon: "survey senses", link: "/surveysays" },
+    { name: "Affixated", icon: "affixated", link: "/affix"},
+    { name: "Rooted", icon: "rooted", link: "/roots"}
 
 ]

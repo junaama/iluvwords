@@ -1,0 +1,20 @@
+<svg width="75" height="75" viewBox="0 0 75 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="75" height="75" rx="12" fill="#DDD8B8"/>
+<line x1="39" y1="13" x2="39" y2="63" stroke="black" stroke-width="4"/>
+<line x1="38.286" y1="18.3836" x2="28.7754" y2="21.4737" stroke="black" stroke-width="4"/>
+<line x1="33.8015" y1="30.3519" x2="30.7113" y2="20.8414" stroke="black" stroke-width="4"/>
+<line x1="29.2638" y1="40.1387" x2="26.8785" y2="30.4273" stroke="black" stroke-width="4"/>
+<line x1="34.3871" y1="28.1043" x2="24.8765" y2="31.1944" stroke="black" stroke-width="4"/>
+<line y1="-2" x2="10" y2="-2" transform="matrix(0.999971 -0.0076205 -0.0076205 -0.999971 36.9629 12.2285)" stroke="black" stroke-width="4"/>
+<line y1="-2" x2="10" y2="-2" transform="matrix(-0.00762046 -0.999971 -0.999971 0.00762046 43.0171 24.1797)" stroke="black" stroke-width="4"/>
+<line y1="-2" x2="10" y2="-2" transform="matrix(-0.0808407 -0.996727 -0.996727 0.0808407 50.4238 32.1753)" stroke="black" stroke-width="4"/>
+<line y1="-2" x2="10" y2="-2" transform="matrix(0.999971 -0.0076205 -0.0076205 -0.999971 43.7358 20.2173)" stroke="black" stroke-width="4"/>
+<line x1="27.6989" y1="30.3361" x2="18.1936" y2="33.4425" stroke="black" stroke-width="4"/>
+<line x1="23.2352" y1="42.3122" x2="20.1288" y2="32.8069" stroke="black" stroke-width="4"/>
+<line x1="18.7138" y1="52.1068" x2="16.312" y2="42.3995" stroke="black" stroke-width="4"/>
+<line x1="23.8171" y1="40.0641" x2="14.3118" y2="43.1705" stroke="black" stroke-width="4"/>
+<line y1="-2" x2="10" y2="-2" transform="matrix(0.996827 0.0795976 0.0795976 -0.996827 39.7227 34.3721)" stroke="black" stroke-width="4"/>
+<line y1="-2" x2="10" y2="-2" transform="matrix(0.0795977 -0.996827 -0.996827 -0.0795977 44.7119 46.8057)" stroke="black" stroke-width="4"/>
+<line y1="-2" x2="10" y2="-2" transform="matrix(0.00637347 -0.99998 -0.99998 -0.00637347 51.3931 55.417)" stroke="black" stroke-width="4"/>
+<line y1="-2" x2="10" y2="-2" transform="matrix(0.996827 0.0795976 0.0795976 -0.996827 45.7729 42.9214)" stroke="black" stroke-width="4"/>
+</svg>
