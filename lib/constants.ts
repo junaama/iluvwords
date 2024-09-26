@@ -8,5 +8,7 @@ export const Gamemodes = [
     { name: "Synonyms", icon: "abc", link: "/synonym" },
     { name: "Rhyme", icon: "abc", link: "/rhyme" },
     { name: "Survey Says", icon: "abc", link: "/surveysays" },
+    { name: "Affix", icon: "abc", link: "/affix"},
+    { name: "Roots", icon: "abc", link: "/roots"}
 
 ]
