@@ -17,11 +17,12 @@ const generateGrid = (word: string, size: number) => {
   return grid
 }
 
-const isValidWord = (word: string) => {
-  // In a real application, this would check against a dictionary API
-  const validWords = ["LOVE", "DEER", "POLE", "LEPER", "LEVER", "PEEL", "PEER", "LOPE", "ROPE", "ROLE", "OVER", "DOVE", "PROVE", "DROVE", "ROPED", "LOVED", "DEVELOP", "LODE", "PEE", "PER", "RED", "RODE"]
-  return validWords.includes(word)
-}
+const isWordValid = async (word: string) => {
+  const res = await fetch(`/api/word?word=${word.toLowerCase()}`);
+  const data = await res.json();
+  return data.valid;
+};
+
 
 const isAdjacent = (cell1: [number, number], cell2: [number, number]) => {
   const [row1, col1] = cell1
@@ -72,7 +73,7 @@ export default function WordCrushSaga() {
     setSelectedCells(newSelectedCells)
   }
 
-  const checkWord = useCallback(() => {
+  const checkWord = useCallback(async() => {
     const word = selectedCells.map(([row, col]) => grid[row][col]).join('')
     if (word.length < MIN_WORD_LENGTH) {
       toast({
@@ -82,7 +83,7 @@ export default function WordCrushSaga() {
       })
       return
     }
-    if (isValidWord(word)) {
+    if (await isWordValid(word)) {
       setScore(score + word.length)
       const newGrid = grid.map(row => [...row])
       
@@ -153,6 +154,9 @@ export default function WordCrushSaga() {
             <p>Score: {score}</p>
             <Button onClick={checkWord} disabled={selectedCells.length < MIN_WORD_LENGTH || isGameWon}>
               Check Word
+            </Button>
+            <Button onClick={()=>setGameWon(true)} disabled={!score}>
+              Finish
             </Button>
           </div>
           {isGameWon && (
