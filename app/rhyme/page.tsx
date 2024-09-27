@@ -6,17 +6,10 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { toast } from "@/hooks/use-toast"
 import { useWordContext } from "@/context/word-context"
-
-// This would typically come from an API or a larger dataset
-const wordsWithRhymes: { [key: string]: string[] } = {
-  "cat": ["bat", "hat", "mat", "rat", "sat", "flat", "chat"],
-  "blue": ["clue", "due", "glue", "new", "true", "zoo", "you"],
-  "light": ["bite", "fight", "height", "kite", "might", "night", "sight"]
-}
+import { isRhymeValid } from "@/lib/api"
 
 export default function Rhyme() {
   const { wordOfTheDay } = useWordContext()
-  const [rhymes, setRhymes] = useState<string[]>([])
   const [guessedRhymes, setGuessedRhymes] = useState<{ word: string; correct: boolean }[]>([])
   const [input, setInput] = useState("")
   const [timeLeft, setTimeLeft] = useState(60)
@@ -24,10 +17,7 @@ export default function Rhyme() {
   const [gameActive, setGameActive] = useState(false)
 
   const startGame = useCallback(() => {
-    // const words = Object.keys(wordsWithRhymes)
-    // const randomWord = words[Math.floor(Math.random() * words.length)]
-    // setCurrentWord(randomWord)
-    setRhymes(wordsWithRhymes["cat"])
+
     setGuessedRhymes([])
     setInput("")
     setTimeLeft(60)
@@ -49,12 +39,13 @@ export default function Rhyme() {
     return () => clearTimeout(timer)
   }, [timeLeft, gameActive, endGame])
 
-  const handleGuess = useCallback(() => {
+  const handleGuess = useCallback(async () => {
     const guess = input.toLowerCase().trim()
-    if (guess && !guessedRhymes.some(r => r.word === guess)) {
-      const isCorrect = rhymes.includes(guess)
-      setGuessedRhymes([...guessedRhymes, { word: guess, correct: isCorrect }])
-      if (isCorrect) {
+    const isValidRhyme = await isRhymeValid(guess, wordOfTheDay)
+    if (guess) {
+      // const isCorrect = rhymes.includes(guess)
+      setGuessedRhymes([...guessedRhymes, { word: guess, correct: isValidRhyme }])
+      if (isValidRhyme) {
         setScore(score + 1)
         toast({
           title: "Correct!",
@@ -69,9 +60,9 @@ export default function Rhyme() {
           variant: "destructive",
         })
       }
-    }
+    } 
     setInput("")
-  }, [input, rhymes, guessedRhymes, score])
+  }, [input, guessedRhymes, score])
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
