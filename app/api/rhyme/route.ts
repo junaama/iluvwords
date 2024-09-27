@@ -21,7 +21,7 @@ export async function GET(request: Request) {
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error) {
-        return new Response(JSON.stringify({ error: 'Failed to check rhyme' }), {
+        return new Response(JSON.stringify({ error: `Failed to check rhyme: ${error}` }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
         });
