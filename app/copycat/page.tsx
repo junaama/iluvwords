@@ -5,17 +5,18 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { useWordContext } from "@/context/word-context"
+import {isSynonymValid} from "@/lib/api"
 
 // This would typically come from an API or a larger dataset
-const wordSynonyms: { [key: string]: string[] } = {
-  "big": ["large", "huge", "enormous", "gigantic", "vast", "immense", "massive"],
-  "happy": ["joyful", "content", "delighted", "cheerful", "merry", "ecstatic", "glad"],
-  "fast": ["quick", "speedy", "swift", "rapid", "hasty", "expeditious", "brisk"]
-}
+// const wordSynonyms: { [key: string]: string[] } = {
+//   "big": ["large", "huge", "enormous", "gigantic", "vast", "immense", "massive"],
+//   "happy": ["joyful", "content", "delighted", "cheerful", "merry", "ecstatic", "glad"],
+//   "fast": ["quick", "speedy", "swift", "rapid", "hasty", "expeditious", "brisk"]
+// }
 
 export default function Copycat() {
    const {wordOfTheDay} = useWordContext()
-  const [synonyms, setSynonyms] = useState<string[]>([])
+  // const [synonyms, setSynonyms] = useState<string[]>([])
   const [guessedSynonyms, setGuessedSynonyms] = useState<string[]>([])
   const [wrongGuesses, setWrongGuesses] = useState<string[]>([])
   const [input, setInput] = useState("")
@@ -27,7 +28,7 @@ export default function Copycat() {
     // const words = Object.keys(wordSynonyms)
     // const randomWord = words[Math.floor(Math.random() * words.length)]
     // setCurrentWord(randomWord)
-    setSynonyms(wordSynonyms["big"])
+    // setSynonyms(wordSynonyms["big"])
     setGuessedSynonyms([])
     setInput("")
     setTimeLeft(60)
@@ -49,9 +50,10 @@ export default function Copycat() {
     return () => clearTimeout(timer)
   }, [timeLeft, gameActive, endGame])
 
-  const handleGuess = useCallback(() => {
+  const handleGuess = useCallback(async () => {
     const guess = input.toLowerCase().trim()
-    if (synonyms.includes(guess) && !guessedSynonyms.includes(guess)) {
+    const isValidSynonym = await isSynonymValid(wordOfTheDay, guess)
+    if (isValidSynonym && !guessedSynonyms.includes(guess)) {
       setGuessedSynonyms([...guessedSynonyms, guess])
       setScore(score + 1)
       setTimeLeft(timeLeft + 2)
@@ -60,7 +62,7 @@ export default function Copycat() {
       setTimeLeft(timeLeft - 2)
     }
     setInput("")
-  }, [input, synonyms, guessedSynonyms, score, timeLeft])
+  }, [input, guessedSynonyms, score, timeLeft])
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
