@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { useWordContext } from "@/context/word-context"
-import {isSynonymValid} from "@/lib/api"
+import { isSynonymValid } from "@/lib/api"
+import { toast } from "@/hooks/use-toast"
 
 
 export default function Copycat() {
-   const {wordOfTheDay} = useWordContext()
-  const [guessedSynonyms, setGuessedSynonyms] = useState<string[]>([])
-  const [wrongGuesses, setWrongGuesses] = useState<string[]>([])
+  const { wordOfTheDay } = useWordContext()
+  const [guessedSynonyms, setGuessedSynonyms] = useState<{ word: string; correct: boolean }[]>([])
+
   const [input, setInput] = useState("")
   const [timeLeft, setTimeLeft] = useState(60)
   const [score, setScore] = useState(0)
@@ -38,17 +39,24 @@ export default function Copycat() {
     }
     return () => clearTimeout(timer)
   }, [timeLeft, gameActive, endGame])
-
   const handleGuess = useCallback(async () => {
     const guess = input.toLowerCase().trim()
     const isValidSynonym = await isSynonymValid(wordOfTheDay, guess)
-    if (isValidSynonym && !guessedSynonyms.includes(guess)) {
-      setGuessedSynonyms([...guessedSynonyms, guess])
-      setScore(score + 1)
-      setTimeLeft(timeLeft + 2)
+    const isDuplicate = guessedSynonyms.some(guessed => guessed.word === guess)
+
+    if (!isDuplicate) {
+      setGuessedSynonyms([...guessedSynonyms, { word: guess, correct: isValidSynonym }])
+
+      if (isValidSynonym) {
+        setScore(score + 1)
+        setTimeLeft(timeLeft + 2)
+      }
     } else {
-      setWrongGuesses([...wrongGuesses, guess])
-      setTimeLeft(timeLeft - 2)
+      toast({
+        title: "Duplicate",
+        description: `${guess} has already been guessed.`,
+        variant: "default",
+      })
     }
     setInput("")
   }, [input, guessedSynonyms, score, timeLeft])
@@ -90,30 +98,19 @@ export default function Copycat() {
                 Guess
               </Button>
             </div>
-            {/* <div className="mt-4">
-              <h3 className="font-semibold">Guessed Synonyms:</h3>
-              <p>{guessedSynonyms.join(", ")}</p>
-            </div> */}
-             <div className="mt-4">
-            <h3 className="font-semibold mb-2">Guessed Synonyms:</h3>
-            <div className="flex flex-wrap gap-2">
-              {guessedSynonyms.map((synonym, index) => (
-                <span key={index} className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">
-                  {synonym}
+            <div className="mt-4">
+              <h3 className="font-semibold mb-2">Guessed Synonyms:</h3>
+              {guessedSynonyms.map((guess, index) => (
+                <span
+                  key={index}
+                  className={`inline-block px-2 py-1 rounded-full text-sm mr-2 mb-2 ${guess.correct ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}
+                >
+                  {guess.word}
                 </span>
               ))}
             </div>
-          </div>
-          <div className="mt-4">
-            <h3 className="font-semibold mb-2">Wrong Guesses:</h3>
-            <div className="flex flex-wrap gap-2">
-              {wrongGuesses.map((guess, index) => (
-                <span key={index} className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm">
-                  {guess}
-                </span>
-              ))}
-            </div>
-          </div>
+
             <div className="mt-4">
               <h3 className="font-semibold">Score: {score}</h3>
             </div>
