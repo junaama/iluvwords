@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     }
 }
 
-export async function getSynonyms(word: string) {
+async function getSynonyms(word: string) {
     const response = await fetch(`https://www.thesaurus.com/browse/${word}`);
     const body = await response.text();
     const $ = cheerio.load(body);
