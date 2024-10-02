@@ -41,9 +41,8 @@ export default function Rhyme() {
 
   const handleGuess = useCallback(async () => {
     const guess = input.toLowerCase().trim()
-    const isValidRhyme = await isRhymeValid(guess, wordOfTheDay)
-    if (guess) {
-      // const isCorrect = rhymes.includes(guess)
+    if (!guessedRhymes.some(guessed => guessed.word === guess)) {
+      const isValidRhyme = await isRhymeValid(guess, wordOfTheDay)
       setGuessedRhymes([...guessedRhymes, { word: guess, correct: isValidRhyme }])
       if (isValidRhyme) {
         setScore(score + 1)
@@ -60,7 +59,13 @@ export default function Rhyme() {
           variant: "destructive",
         })
       }
-    } 
+    } else {
+      toast({
+        title: "Duplicate",
+        description: `${guess} has already been guessed.`,
+        variant: "default",
+      })
+    }
     setInput("")
   }, [input, guessedRhymes, score])
 
