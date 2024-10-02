@@ -7,16 +7,9 @@ import { Progress } from "@/components/ui/progress"
 import { useWordContext } from "@/context/word-context"
 import {isSynonymValid} from "@/lib/api"
 
-// This would typically come from an API or a larger dataset
-// const wordSynonyms: { [key: string]: string[] } = {
-//   "big": ["large", "huge", "enormous", "gigantic", "vast", "immense", "massive"],
-//   "happy": ["joyful", "content", "delighted", "cheerful", "merry", "ecstatic", "glad"],
-//   "fast": ["quick", "speedy", "swift", "rapid", "hasty", "expeditious", "brisk"]
-// }
 
 export default function Copycat() {
    const {wordOfTheDay} = useWordContext()
-  // const [synonyms, setSynonyms] = useState<string[]>([])
   const [guessedSynonyms, setGuessedSynonyms] = useState<string[]>([])
   const [wrongGuesses, setWrongGuesses] = useState<string[]>([])
   const [input, setInput] = useState("")
@@ -25,10 +18,6 @@ export default function Copycat() {
   const [gameActive, setGameActive] = useState(false)
 
   const startGame = useCallback(() => {
-    // const words = Object.keys(wordSynonyms)
-    // const randomWord = words[Math.floor(Math.random() * words.length)]
-    // setCurrentWord(randomWord)
-    // setSynonyms(wordSynonyms["big"])
     setGuessedSynonyms([])
     setInput("")
     setTimeLeft(60)
