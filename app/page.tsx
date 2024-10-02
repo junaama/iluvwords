@@ -25,9 +25,10 @@ export default function Home() {
           {Gamemodes.map((gamemode, index) => (
             <div key={index} className="flex items-center gap-4 font-bold text-2xl">
               <Image src={`/icons/${gamemode.icon}.svg`} alt="game icon" width="64" height="64" />
-              <Link href={gamemode.link}>
+              {!gamemode.locked ? <Link href={gamemode.link}>
                 {gamemode.name}
-              </Link>
+              </Link> : <div>{gamemode.name}</div> }
+              {gamemode.locked && <Image src={`/icons/lock.svg`} alt="lock icon" width="24" height="24" />}
             </div>
           ))}
         </div>
