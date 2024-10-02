@@ -1,13 +1,14 @@
 
 export const Gamemodes = [
     // { name: "Origin", icon: "origin", link: "/origin" },
+    { name: "Antsy", icon: "antsy", link: "/antsy",},
+
     { name: "Babel", icon: "babel", link: "/babel" },
     { name: "Copycat", icon: "copycat", link: "/copycat" },
     { name: "Lexicity", icon: "lexicity", link: "/lexicity" },
     { name: "Rhyme", icon: "rhyme", link: "/rhyme" },
     { name: "Survey Senses", icon: "survey senses", link: "/surveysenses" },
     { name: "Affixated", icon: "affixated", link: "/affixated", locked: true },
-    { name: "Antsy", icon: "antsy", link: "/antsy", locked: true },
     { name: "Chaser", icon: "chaser", link: "/chaser", locked: true },
     { name: "Nexus", icon: "abc", link: "/nexus", locked: true },
     { name: "Rooted", icon: "rooted", link: "/rooted", locked: true },

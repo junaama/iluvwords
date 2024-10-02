@@ -1,4 +1,4 @@
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -11,7 +11,6 @@ export async function GET(request: Request) {
             headers: { 'Content-Type': 'application/json' },
         });
     }
-
     try {
         const antonyms = await scrapeAntonyms(word1);
         const isAntonym = antonyms.includes(word2.toLowerCase());
@@ -29,30 +28,24 @@ export async function GET(request: Request) {
 }
 // Function to scrape antonyms
 async function scrapeAntonyms(word: string) {
-    try {
-        const data = await fetch(`https://cwsl.ca/${word}`);
 
-        const body = await data.text();
-        const $ = cheerio.load(body);
+    const data = await fetch(`https://cwsl.ca/${word}`);
+    const body = await data.text();
+    const $ = cheerio.load(body);
+    const antonyms: string[] = [];
 
-        let antonyms: string[] = [];
-
-        $(`h3.title:contains(${word.toUpperCase()} Antonyms)`).closest('.widget.LinkList').find('.widget-content').each((idx, antelem) => {
-            $(antelem).find('a').each((idx, antElem) => {
-                antonyms.push($(antElem).text().trim())
-            })
-
+    $(`h3.title:contains(${word.toUpperCase()} Antonyms)`).closest('.widget.LinkList').find('.widget-content').each((idx, antelem) => {
+        $(antelem).find('a').each((idx, antElem) => {
+            antonyms.push($(antElem).text().trim())
         })
 
-        $(`h3.title:contains("${word.toUpperCase()} antonyms")`).closest('.widget.LinkList').find('.widget-content').each((idx, antelem) => {
-            $(antelem).find('a').each((idx, antElem) => {
-                antonyms.push($(antElem).text().trim())
-            })
+    })
 
+    $(`h3.title:contains("${word.toUpperCase()} antonyms")`).closest('.widget.LinkList').find('.widget-content').each((idx, antelem) => {
+        $(antelem).find('a').each((idx, antElem) => {
+            antonyms.push($(antElem).text().trim())
         })
 
-        return antonyms
-    } catch (error) {
-        console.error('Error:', error);
-    }
+    })
+    return antonyms
 }
