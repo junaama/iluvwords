@@ -5,28 +5,18 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { useWordContext } from "@/context/word-context"
-
-// This would typically come from an API or a larger dataset
-const wordAntonyms: { [key: string]: string[] } = {
-  "one": ["small", "tiny", "minuscule", "puny", "insignificant", "minim", "diminutive"],
-  "two": ["sad", "unhappy", "depressed", "miserable", "glum", "melancholy", "despondent"],
-  "three": ["slow", "sluggish", "lethargic", "dull", "languid", "torpid", "sedentary"]
-}
+import { isAntonymValid } from "@/lib/api"
+import { toast } from "@/hooks/use-toast"
 
 export default function Antsy() {
-  const {wordOfTheDay} = useWordContext()
-  const [antonyms, setAntonyms] = useState<string[]>([])
-  const [guessedAntonyms, setGuessedAntonyms] = useState<string[]>([])
+  const { wordOfTheDay } = useWordContext()
+  const [guessedAntonyms, setGuessedAntonyms] = useState<{ word: string; correct: boolean }[]>([])
   const [input, setInput] = useState("")
   const [timeLeft, setTimeLeft] = useState(60)
   const [score, setScore] = useState(0)
   const [gameActive, setGameActive] = useState(false)
 
   const startGame = useCallback(() => {
-    // const words = Object.keys(wordAntonyms)
-    // const randomWord = words[Math.floor(Math.random() * words.length)]
-    // setCurrentWord(randomWord)
-    setAntonyms(wordAntonyms["one"])
     setGuessedAntonyms([])
     setInput("")
     setTimeLeft(60)
@@ -48,15 +38,27 @@ export default function Antsy() {
     return () => clearTimeout(timer)
   }, [timeLeft, gameActive, endGame])
 
-  const handleGuess = useCallback(() => {
+  const handleGuess = useCallback(async () => {
     const guess = input.toLowerCase().trim()
-    if (antonyms.includes(guess) && !guessedAntonyms.includes(guess)) {
-        setGuessedAntonyms([...guessedAntonyms, guess])
-      setScore(score + 1)
-      setTimeLeft(timeLeft + 2)
+    const isValidAntonym = await isAntonymValid(wordOfTheDay, guess)
+    const isDuplicate = guessedAntonyms.some(guessed => guessed.word === guess)
+
+    if (!isDuplicate) {
+      setGuessedAntonyms([...guessedAntonyms, { word: guess, correct: isValidAntonym }])
+
+      if (isValidAntonym) {
+        setScore(score + 1)
+        setTimeLeft(timeLeft + 2)
+      }
+    } else {
+      toast({
+        title: "Duplicate",
+        description: `${guess} has already been guessed.`,
+        variant: "default",
+      })
     }
     setInput("")
-  }, [input, antonyms, guessedAntonyms, score, timeLeft])
+  }, [input, guessedAntonyms, score, timeLeft])
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -97,7 +99,15 @@ export default function Antsy() {
             </div>
             <div className="mt-4">
               <h3 className="font-semibold">Guessed Antonym:</h3>
-              <p>{guessedAntonyms.join(", ")}</p>
+              {guessedAntonyms.map((guess, index) => (
+                <span
+                  key={index}
+                  className={`inline-block px-2 py-1 rounded-full text-sm mr-2 mb-2 ${guess.correct ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}
+                >
+                  {guess.word}
+                </span>
+              ))}
             </div>
             <div className="mt-4">
               <h3 className="font-semibold">Score: {score}</h3>
