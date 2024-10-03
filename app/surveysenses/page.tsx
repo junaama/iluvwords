@@ -1,53 +1,88 @@
 "use client"
-
 import { useState, KeyboardEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
 import { useWordContext } from "@/context/word-context"
+import { toast } from "@/hooks/use-toast"
+
+const modes = ["Taste", "Look", "Sound", "Feel", "Smell"]
 
 export default function Component() {
   const { wordOfTheDay } = useWordContext()
   const [description, setDescription] = useState("")
   const [rarityScore, setRarityScore] = useState<number | null>(null)
+  const [rarityTier, setRarityTier] = useState<string | null>('')
+  const [percentageGuessed, setPercentageGuessed] = useState<number | null>(null)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [mode, setMode] = useState("Taste")
+  const [currentModeIndex, setCurrentModeIndex] = useState(0)
 
-  const getProgressBarColor = (score: number) => {
-    if (score < 45) return "bg-green-500"
-    if (score < 90) return "bg-yellow-500"
-    return "bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500"
-  }
 
-  const handleSubmit = () => {
-    // In a real application, this would be an API call to check the rarity against other player submitted answers
-    if (description && !isSubmitted) {
-      // ... rest of the function
+  const calculateRarityScore = async (description: string) => {
+    try {
+      const response = await fetch('/api/surveysenses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ daily_word: wordOfTheDay, mode, input_phrase: description }),
+      });
 
-      const simulatedRarityScore = Math.floor(Math.random() * 100) + 1
-      setRarityScore(simulatedRarityScore)
-      setIsSubmitted(true)
+      if (!response.ok) {
+        throw new Error('Failed to calculate rarity score');
+      }
+      const data = await response.json();
+      return {rarityScore: data.rarityScore, rarityTier: data.rarityTier, percentageGuessed: data.percentageGuessed};
+    } catch (error) {
+      console.error('Error calculating rarity score:', error);
+      return null;
     }
   }
+
+  const handleSubmit = async () => {
+    if (description && !isSubmitted) {
+      const data = await calculateRarityScore(description);
+
+      if (data?.percentageGuessed !== null) {
+        setRarityScore(data?.rarityScore);
+        setRarityTier(data?.rarityTier)
+        setPercentageGuessed(data?.percentageGuessed)
+        setIsSubmitted(true);
+
+      } else {
+        console.error('Failed to get rarity score');
+        toast({ title: 'Error', description: 'Failed to get rarity score', variant: 'destructive' })
+      }
+    }
+  }
+
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSubmit()
     }
   }
+
   const handleNextMode = () => {
-    const modes = ["Taste", "Look", "Sound", "Feel", "Smell"]
-    const currentModeIndex = modes.indexOf(mode)
-    const nextModeIndex = (currentModeIndex + 1) % modes.length
-    const newMode = modes[nextModeIndex]
-    setMode(newMode)
-    setDescription("")
-    setRarityScore(null)
-    setIsSubmitted(false)
+    const nextModeIndex = currentModeIndex + 1
+    if (nextModeIndex < modes.length) {
+      setCurrentModeIndex(nextModeIndex)
+      setMode(modes[nextModeIndex])
+      setDescription("")
+      setRarityScore(null)
+      setPercentageGuessed(null)
+      setRarityTier(null)
+      setIsSubmitted(false)
+    } else {
+      // Game is complete
+      setIsSubmitted(true)
+    }
   }
 
   return (
-    <div className="min-h-screen  flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+      {currentModeIndex < modes.length ? (
+          <>
         <h1 className="text-3xl font-bold text-center mb-6">{mode}</h1>
         <div className="mb-6">
           <h2 className="text-2xl font-semibold text-center">{wordOfTheDay}</h2>
@@ -71,29 +106,48 @@ export default function Component() {
             Submit
           </Button>
         </div>
-        {rarityScore !== null && (
+        {percentageGuessed !== null && (
           <div className="mt-6 space-y-4">
-            <h3 className="text-xl font-semibold text-center">Rarity Score</h3>
-            {/* <Progress value={rarityScore} className="w-full" /> */}
-            <div className="w-full bg-gray-200 rounded-full h-3">
-              <div
-                className={cn("h-3 rounded-full transition-all duration-500", getProgressBarColor(rarityScore))}
-                style={{ width: `${rarityScore}%` }}
-              ></div>
-            </div>
-            <p className="text-center text-2xl font-bold">{rarityScore}%</p>
+            {/* <h3 className="text-xl font-semibold text-center">Rarity Score</h3>
+            <p className="text-center text-2xl font-bold">{rarityScore}% of people said that </p>
             <p className="text-center text-gray-600">
               {rarityScore < 45
-                ? "Common description. Try to be more creative!"
+                ? "Wow! That's a unique way to describe it!"
                 : rarityScore < 90
                   ? "Interesting description! You're on the right track."
-                  : "Wow! That's a unique way to describe it!"}
-            </p>
-            <Button onClick={handleNextMode} className="w-full">
-              Next Mode
-            </Button>
+                  : "Common description. Try to be more creative!"}
+            </p> */}
+              <h3 className="text-xl font-semibold text-center">Rarity</h3>
+  <p className="text-center text-2xl font-bold">{rarityTier}</p>
+  <p className="text-center text-lg">
+    {percentageGuessed.toFixed(2)}% of people said that
+  </p>
+  <p className="text-center text-gray-600">
+    {rarityTier === "Unicorn" && "Incredible! You're the only one who thought of this!"}
+    {rarityTier === "Legendary" && "Wow! That's an extremely rare description!"}
+    {rarityTier === "Epic" && "Amazing! Your description is quite unique."}
+    {rarityTier === "Rare" && "Great job! Your description is uncommon."}
+    {rarityTier === "Uncommon" && "Nice! Your description is somewhat unique."}
+    {rarityTier === "Common" && "Interesting description, but it's fairly common. Try to be more creative!"}
+  </p>
+              {currentModeIndex < modes.length - 1 ? (
+                  <Button onClick={handleNextMode} className="w-full">
+                    Next Mode
+                  </Button>
+                ) : (
+                  <Button onClick={handleNextMode} className="w-full">
+                    Complete Game
+                  </Button>
+                )}
           </div>
         )}
+        </>
+      ) : (
+        <div className="text-center">
+        <h1 className="text-3xl font-bold mb-6">Game Complete!</h1>
+        <p className="text-xl">Thank you for playing!</p>
+      </div>
+      )}
       </div>
     </div>
   )
