@@ -1,10 +1,5 @@
 import { createClient } from '@/lib/supabase';
 
-type SearchSimilarPhrasesResult = {
-  phrase_id: number;  // TypeScript uses 'number' for both int and bigint
-  input_phrase: string;
-};
-
 // export async function GET(request: Request) {
 //   const supabase = createClient()
 //   const { searchParams } = new URL(request.url);
