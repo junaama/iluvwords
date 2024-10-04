@@ -8,6 +8,13 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 const modes = ["Taste", "Look", "Sound", "Feel", "Smell"]
 
+type Stat = {
+  mode: string,
+  description: string,
+  rarityTier: string,
+  percentageGuessed: number,
+};
+
 export default function Component() {
   const { wordOfTheDay } = useWordContext()
   const [description, setDescription] = useState("")
@@ -16,7 +23,7 @@ export default function Component() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [mode, setMode] = useState("Taste")
   const [currentModeIndex, setCurrentModeIndex] = useState(0)
-  const [allStats, setAllStats] = useState<Array<any>>([]);
+  const [allStats, setAllStats] = useState<Array<Stat>>([]);
   const [gameComplete, setGameComplete] = useState(false)
   const [isPageLoading, setIsPageLoading] = useState(true)
 
@@ -68,8 +75,8 @@ export default function Component() {
         const newStat = {
           mode,
           description,
-          rarityTier: data.rarityTier,
-          percentageGuessed: data.percentageGuessed,
+          rarityTier: data?.rarityTier,
+          percentageGuessed: data?.percentageGuessed,
         };
         setRarityTier(data?.rarityTier)
         setPercentageGuessed(data?.percentageGuessed)
