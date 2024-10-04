@@ -155,6 +155,16 @@ export const worldElements: { [key: string]: string } = {
   <line x1="5" y1="15" x2="19" y2="15" stroke="#FFF" stroke-width="2" />
   <line x1="12" y1="3" x2="12" y2="21" stroke="#FFF" stroke-width="2" />
 </svg>
+`,
+"TREE": `<svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tree trunk -->
+  <rect x="10" y="14" width="4" height="6" fill="#8B4513"/>
+
+  <!-- Tree foliage -->
+  <circle cx="12" cy="10" r="6" fill="#228B22"/>
+  <circle cx="9" cy="7" r="5" fill="#228B22"/>
+  <circle cx="15" cy="7" r="5" fill="#228B22"/>
+</svg>
 `
 }
 
