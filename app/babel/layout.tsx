@@ -1,5 +1,4 @@
 import { Header } from "@/appcomponents/Header";
-import RulesModal from "@/appcomponents/RulesModal";
 
 export default function Layout({
     children,
