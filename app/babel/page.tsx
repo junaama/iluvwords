@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
 import { useWordContext } from "@/context/word-context"
 
@@ -11,7 +11,7 @@ const MIN_WORD_LENGTH = 3
 
 const generateGrid = (word: string, size: number) => {
   const letters = word.split('')
-  const grid = Array(size).fill(null).map(() => 
+  const grid = Array(size).fill(null).map(() =>
     Array(size).fill(null).map(() => letters[Math.floor(Math.random() * letters.length)])
   )
   return grid
@@ -41,9 +41,9 @@ export default function WordCrushSaga() {
     setGrid(generateGrid(wordOfTheDay, GRID_SIZE))
   }, [wordOfTheDay])
 
-  useEffect(()=> {
-    if(score) {
-        setGameWon(grid.every(row => row.every(cell => cell === null)))
+  useEffect(() => {
+    if (score) {
+      setGameWon(grid.every(row => row.every(cell => cell === null)))
     }
   }, [score])
 
@@ -73,7 +73,7 @@ export default function WordCrushSaga() {
     setSelectedCells(newSelectedCells)
   }
 
-  const checkWord = useCallback(async() => {
+  const checkWord = useCallback(async () => {
     const word = selectedCells.map(([row, col]) => grid[row][col]).join('')
     if (word.length < MIN_WORD_LENGTH) {
       toast({
@@ -86,7 +86,7 @@ export default function WordCrushSaga() {
     if (await isWordValid(word)) {
       setScore(score + word.length)
       const newGrid = grid.map(row => [...row])
-      
+
       // Remove selected letters
       selectedCells.forEach(([row, col]) => {
         newGrid[row][col] = null
@@ -114,6 +114,7 @@ export default function WordCrushSaga() {
         variant: "default",
       })
     } else {
+      setSelectedCells([])
       toast({
         title: "Invalid word",
         description: `"${word}" is not a valid word.`,
@@ -124,45 +125,49 @@ export default function WordCrushSaga() {
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className=" flex items-center justify-center p-4">
       <Card className="w-full max-w-lg">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold text-center">{wordOfTheDay} </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-8 gap-1 mb-4">
-            {grid.map((row, rowIndex) =>
-              row.map((letter, colIndex) => (
-                <button
-                  key={`${rowIndex}-${colIndex}`}
-                  className={`w-10 h-10 rounded-md flex items-center justify-center text-lg font-bold ${
-                    letter === null
-                      ? 'bg-gray-100'
-                      : selectedCells.some(([r, c]) => r === rowIndex && c === colIndex)
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-200 text-gray-800'
-                  }`}
-                  onClick={() => handleCellClick(rowIndex, colIndex)}
-                  disabled={isGameWon || letter === null}
-                >
-                  {letter}
-                </button>
-              ))
-            )}
+
+        <CardContent className="p-4">
+          <div className="flex justify-between space-x-1">
+            {grid.map((column, colIndex) => (
+              <div key={colIndex} className="flex flex-col space-y-1">
+                {column.map((letter, rowIndex) => (
+                  <button
+                    key={`${colIndex}-${rowIndex}`}
+                    className={`
+                  w-12 h-12 flex items-center justify-center
+                  text-lg font-bold border border-gray-300
+                  ${letter === null
+                        ? 'bg-gray-100'
+                        : selectedCells.some(([r, c]) => r === colIndex && c === rowIndex)
+                          ? 'bg-blue-400 text-white'
+                          : 'bg-gray-200 text-gray-800'
+                      }
+                `}
+                    onClick={() => handleCellClick(colIndex, rowIndex)}
+                    disabled={isGameWon || letter === null}
+
+                  >
+                    {letter}
+                  </button>
+                ))}
+              </div>
+            ))}
           </div>
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-4 py-4">
             <p>Score: {score}</p>
             <Button onClick={checkWord} disabled={selectedCells.length < MIN_WORD_LENGTH || isGameWon}>
               Check Word
             </Button>
-            <Button onClick={()=>setGameWon(true)} disabled={!score}>
+            <Button onClick={() => setGameWon(true)} disabled={!score}>
               Finish
             </Button>
           </div>
           {isGameWon && (
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-green-600 mb-2">Congratulations!</h2>
-              <p>You&apos;ve cleared all the letters. Final score: {score}</p>
+              <h2 className="text-2xl font-bold text-green-600 mb-2">Puzzle Completed!</h2>
+              <p>You&apos;ve cleared all the letters (you could). Final score: {score}</p>
             </div>
           )}
         </CardContent>
