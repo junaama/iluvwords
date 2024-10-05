@@ -39,6 +39,7 @@ export default function Copycat() {
     }
     return () => clearTimeout(timer)
   }, [timeLeft, gameActive, endGame])
+  
   const handleGuess = useCallback(async () => {
     const guess = input.toLowerCase().trim()
     const isValidSynonym = await isSynonymValid(wordOfTheDay, guess)
@@ -68,9 +69,8 @@ export default function Copycat() {
   }
 
   return (
-    <div className="min-h-screen  flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-3xl font-bold text-center mb-6">Copycat</h1>
+    <div className="flex items-center">
+      <div className="bg-white p-8 rounded-lg shadow-lg  w-full">
         {!gameActive ? (
           <Button onClick={startGame} className="w-full">
             Start Game
@@ -120,9 +120,6 @@ export default function Copycat() {
           <div className="mt-6">
             <h3 className="text-xl font-semibold text-center">Game Over!</h3>
             <p className="text-center mt-2">Your final score: {score}</p>
-            {/* <Button onClick={startGame} className="w-full mt-4">
-              Play Again
-            </Button> */}
           </div>
         )}
       </div>
