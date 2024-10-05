@@ -3,38 +3,13 @@
 import { useState, useCallback, KeyboardEvent, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
 import { Shuffle } from "lucide-react"
 import { useWordContext } from 'context/word-context'
 import { worldElements } from "@/lib/constants"
 import { isWordValid } from "@/lib/api"
-
-
-const isAnagram = (input: string, target: string): boolean => {
-    // Create frequency maps for input and target words
-    const inputMap: Record<string, number> = {}
-    const targetMap: Record<string, number> = {}
-
-    // Populate frequency map for input word
-    for (const char of input.toLowerCase()) {
-        inputMap[char] = (inputMap[char] || 0) + 1
-    }
-
-    // Populate frequency map for target word
-    for (const char of target.toLowerCase()) {
-        targetMap[char] = (targetMap[char] || 0) + 1
-    }
-
-    // Check if input is a subanagram of target
-    for (const char in inputMap) {
-        if (!targetMap[char] || inputMap[char] > targetMap[char]) {
-            return false // Input has a letter not in target, or more of it than target
-        }
-    }
-
-    return true // All letters of input are in target with correct frequencies
-}
+import { isAnagram } from "@/lib/helpers"
 
 const shuffleWord = (word: string) => {
     return word.split('').sort(() => Math.random() - 0.5).join('')
@@ -46,7 +21,7 @@ export default function AnagramWorldBuilder() {
     const [input, setInput] = useState("")
     const [placedElements, setPlacedElements] = useState<{ [key: string]: { x: number; y: number } }>({})
     const [selectedElement, setSelectedElement] = useState<string | null>(null)
-    const [grid, setGrid] = useState<string[][]>(Array(6).fill(null).map(() => Array(6).fill(null)))
+    const [grid, setGrid] = useState<string[][]>(Array(5).fill(null).map(() => Array(5).fill(null)))
 
     useEffect(() => {
         setDisplayedWord(wordOfTheDay)
@@ -56,20 +31,20 @@ export default function AnagramWorldBuilder() {
         setDisplayedWord(shuffleWord(wordOfTheDay))
     }
 
-    const handleGuess = useCallback(async() => {
+    const handleGuess = useCallback(async () => {
         const guess = input.toUpperCase().trim()
         const isValidWord = await isWordValid(guess)
         if (guess && isValidWord && isAnagram(guess, wordOfTheDay) && worldElements[guess] && !placedElements[guess]) {
             setSelectedElement(guess)
             toast({
                 title: "Valid Anagram!",
-                description: `${guess} is a valid world-building element. Place it on the grid!`,
+                description: `${guess} is a valid world structure. Place it on the grid!`,
                 variant: "default",
             })
         } else if (!worldElements[guess]) {
             toast({
                 title: "Invalid Element",
-                description: `${guess} is not a recognized world-building element.`,
+                description: `${guess} is not a recognized world structure.`,
                 variant: "destructive",
             })
         } else if (placedElements[guess]) {
@@ -84,7 +59,7 @@ export default function AnagramWorldBuilder() {
                 description: `${guess} is not a valid word.`,
                 variant: "destructive",
             })
-        
+
         } else {
             toast({
                 title: "Invalid Anagram",
@@ -117,16 +92,13 @@ export default function AnagramWorldBuilder() {
     }
 
     return (
-        <div className="min-h-screen  flex items-center justify-center p-4">
+        <div className="flex items-center justify-center pr-4">
             <Card className="w-full max-w-4xl">
-                <CardHeader>
-                    <CardTitle className="text-3xl font-bold text-center">Lexicity</CardTitle>
-                </CardHeader>
                 <CardContent>
                     <div className="mb-4">
                         <div className="mb-4 flex items-center justify-center">
-                            <p className="text-gray-600 text-center mr-2">
-                                Target word: <span className="font-bold">{displayedWord}</span>
+                            <p className="text-gray-600 text-center mr-1">
+                                <span className="font-bold">{displayedWord}</span>
                             </p>
                             <Button
                                 variant="ghost"
@@ -137,9 +109,6 @@ export default function AnagramWorldBuilder() {
                                 <Shuffle className="h-4 w-4" />
                             </Button>
                         </div>
-                        <p className="text-gray-600 text-center mt-2">
-                            Form anagrams that are world-building elements and place them on the grid!
-                        </p>
                     </div>
                     <div className="flex space-x-4 mb-4">
                         <Input
@@ -153,27 +122,36 @@ export default function AnagramWorldBuilder() {
                         />
                         <Button onClick={handleGuess}>Guess</Button>
                     </div>
-                    <div className="grid grid-cols-6 gap-2 mb-4 justify-items-center">
-                        {grid.map((row, rowIndex) =>
-                            row.map((cell, colIndex) => (
-                                <button
-                                    key={`${rowIndex}-${colIndex}`}
-                                    className="w-16 h-16 bg-white border border-gray-300 flex items-center justify-center"
-                                    onClick={() => handleCellClick(rowIndex, colIndex)}
-                                    aria-label={`Grid cell ${rowIndex}-${colIndex}`}
-                                >
-                                    {cell && (
-                                        <div
-                                            className="w-12 h-12 text-blue-500"
-                                            dangerouslySetInnerHTML={{ __html: worldElements[cell] }}
-                                        />
-                                    )}
-                                </button>
-                            ))
-                        )}
+                    <div className="w-full aspect-square">
+                        <div
+                            className="grid gap-1 w-full h-full"
+                            style={{
+                                gridTemplateColumns: `repeat(${grid[0].length}, 1fr)`,
+                                gridTemplateRows: `repeat(${grid.length}, 1fr)`
+                            }}
+                        >
+                            {grid.map((row, rowIndex) =>
+                                row.map((cell, colIndex) => (
+                                    <button
+                                        key={`${rowIndex}-${colIndex}`}
+                                        className="w-full h-full bg-white border border-gray-300 rounded-md shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center justify-center overflow-hidden"
+                                        onClick={() => handleCellClick(rowIndex, colIndex)}
+                                        aria-label={`Grid cell ${rowIndex}-${colIndex}`}
+                                    >
+                                        {cell && (
+                                            <div className="w-full h-full p-1 text-primary">
+                                                <svg viewBox="0 0 24 24" className="w-full h-full">
+                                                    <g dangerouslySetInnerHTML={{ __html: worldElements[cell] }} />
+                                                </svg>
+                                            </div>
+                                        )}
+                                    </button>
+                                ))
+                            )}
+                        </div>
                     </div>
                     {selectedElement && (
-                        <div className="text-center">
+                        <div className="text-center pt-4">
                             <p>Click on the grid to place: {selectedElement}</p>
                         </div>
                     )}
@@ -181,7 +159,7 @@ export default function AnagramWorldBuilder() {
                         <h3 className="font-semibold mb-2">Placed Elements:</h3>
                         <div className="flex flex-wrap gap-2">
                             {Object.keys(placedElements).map((element) => (
-                                <div key={element} className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                                <div key={element} className="bg-black text-white px-2 py-1 rounded">
                                     {element}
                                 </div>
                             ))}
