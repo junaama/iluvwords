@@ -6,11 +6,11 @@ import { WordProvider } from "@/context/word-context";
 import { Righteous } from 'next/font/google'
 
 const righteous = Righteous({
-    subsets: ['latin'],
-    weight: '400',
-    variable: '--font-righteous',
-  })
-   
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-righteous',
+})
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -35,14 +35,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${righteous.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${righteous.variable} antialiased bg-[#f0e7d5]`}
       >
         <WordProvider>
-            {children}
-        <Toaster />
+          {children}
+          <Toaster />
         </WordProvider>
-      
+
       </body>
     </html>
   );
 }
+
