@@ -15,7 +15,7 @@ export const GameDropdown = () => {
             <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>Games</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {Gamemodes.map((gamemode, index) => (
+                {Gamemodes.filter(gamemode => !gamemode.locked).map((gamemode, index) => (
                     <DropdownMenuItem key={index} onSelect={() => router.push(gamemode.link)} className="gap-4 font-bold ">
                         <Image src={`/icons/${gamemode.icon}.svg`} alt="gamemode dropdown" width="32" height="32" />
                         {gamemode.name}
