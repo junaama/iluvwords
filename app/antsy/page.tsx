@@ -67,8 +67,8 @@ export default function Antsy() {
   }
 
   return (
-    <div className="min-h-screen  flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+    <div className="flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full">
         <h1 className="text-3xl font-bold text-center mb-6">Antsy</h1>
         {!gameActive ? (
           <Button onClick={startGame} className="w-full">
@@ -118,9 +118,6 @@ export default function Antsy() {
           <div className="mt-6">
             <h3 className="text-xl font-semibold text-center">Game Over!</h3>
             <p className="text-center mt-2">Your final score: {score}</p>
-            {/* <Button onClick={startGame} className="w-full mt-4">
-              Play Again
-            </Button> */}
           </div>
         )}
       </div>
