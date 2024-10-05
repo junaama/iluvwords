@@ -1,16 +1,20 @@
-import { Header } from "@/appcomponents/Header";
+import SharedLayout from "@/appcomponents/SharedLayout"
+
+const originRules = [
+    "Race against time to get as many synonyms or words with a similar meaning as the word of the day.",
+    "Example: ",
+    "If the word of the day is ENERGETIC, and the list of words to arrange are ERGON, ENERGETIKOS, ENERGEIN--the correct order is ERGON > ENERGEIN > ENERGETIKOS.",
+    "Come back daily to play again with new words!"
+]
 
 export default function Layout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <div className="items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] ">
-    <Header/>
-      {children}
-    </div>
-  );
+    return (
+        <SharedLayout gameMode="Copycat" rules={originRules}>
+            {children}
+        </SharedLayout>
+    );
 }
-
-
