@@ -1,11 +1,11 @@
 
 export const Gamemodes = [
-    // { name: "Origin", icon: "origin", link: "/origin" },
     { name: "Antsy", icon: "antsy", link: "/antsy",},
 
     { name: "Babel", icon: "babel", link: "/babel" },
     { name: "Copycat", icon: "copycat", link: "/copycat" },
     { name: "Lexicity", icon: "lexicity", link: "/lexicity" },
+    { name: "Origin", icon: "origin", link: "/origin" },
     { name: "Rhyme", icon: "rhyme", link: "/rhyme" },
     { name: "Survey Senses", icon: "survey senses", link: "/surveysenses" },
     { name: "Affixated", icon: "affixated", link: "/affixated", locked: true },
