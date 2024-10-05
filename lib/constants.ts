@@ -8,7 +8,7 @@ export const Gamemodes = [
   { name: "Survey Senses", icon: "survey senses", link: "/surveysenses" },
   { name: "Affixated", icon: "affixated", link: "/affixated", locked: true },
   { name: "Chaser", icon: "chaser", link: "/chaser", locked: true },
-  { name: "Nexus", icon: "abc", link: "/nexus", locked: true },
+  { name: "Nexus", icon: "nexus", link: "/nexus", locked: true },
   { name: "Origin", icon: "origin", link: "/origin", locked: true },
   { name: "Rooted", icon: "rooted", link: "/rooted", locked: true },
 
