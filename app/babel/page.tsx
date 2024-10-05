@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
 import { useWordContext } from "@/context/word-context"
+import { motion } from 'framer-motion'
 
 const GRID_SIZE = 8
 const MIN_WORD_LENGTH = 3
@@ -36,6 +37,21 @@ export default function WordCrushSaga() {
   const [selectedCells, setSelectedCells] = useState<[number, number][]>([])
   const [score, setScore] = useState(0)
   const [isGameWon, setGameWon] = useState(false)
+  const [pressedButton, setPressedButton] = useState<{ col: number, row: number } | null>(null);
+
+  const buttonVariants = {
+    normal: { scale: 1 },
+    pressed: { scale: 0.95 },
+    released: { scale: 1.05 }
+  }
+  const handlePress = (colIndex: number, rowIndex: number) => {
+    setPressedButton({ col: colIndex, row: rowIndex });
+  }
+
+  const handleRelease = () => {
+    setPressedButton(null);  // Clear pressed button state when the button is released
+
+  }
 
   useEffect(() => {
     setGrid(generateGrid(wordOfTheDay, GRID_SIZE))
@@ -127,19 +143,33 @@ export default function WordCrushSaga() {
   return (
     <div className=" flex items-center justify-center p-4">
       <Card className="w-full max-w-lg">
-
         <CardContent className="p-4">
           <div className="flex justify-between space-x-1">
             {grid.map((column, colIndex) => (
               <div key={colIndex} className="flex flex-col space-y-1">
                 {column.map((letter, rowIndex) => (
-                  <button
-                    key={`${colIndex}-${rowIndex}`}
+                  <motion.button
+                    animate={pressedButton?.col === colIndex && pressedButton?.row === rowIndex ? "pressed" : "released"}
+                    transition={{
+                      duration: 0.2,
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 15
+                    }}
+                    initial="normal"
+                    onMouseDown={() => handlePress(colIndex, rowIndex)}
+                    onMouseUp={handleRelease}
+                    onMouseLeave={handleRelease}
+                    onTouchStart={() => handlePress(colIndex, rowIndex)}
+                    onTouchEnd={handleRelease}
+                    whileTap="pressed"
+                    whileHover={{ scale: 1.02 }}
+                    key={`${rowIndex}-${colIndex}`}
                     className={`
                   w-12 h-12 flex items-center justify-center
                   text-lg font-bold border border-gray-300
                   ${letter === null
-                        ? 'bg-gray-100'
+                        ? 'bg-transparent border-none'
                         : selectedCells.some(([r, c]) => r === colIndex && c === rowIndex)
                           ? 'bg-blue-400 text-white'
                           : 'bg-gray-200 text-gray-800'
@@ -147,10 +177,10 @@ export default function WordCrushSaga() {
                 `}
                     onClick={() => handleCellClick(colIndex, rowIndex)}
                     disabled={isGameWon || letter === null}
-
+                    variants={buttonVariants}
                   >
                     {letter}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             ))}
