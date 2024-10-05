@@ -1,14 +1,20 @@
-import { Header } from "@/appcomponents/Header";
+import SharedLayout from "@/appcomponents/SharedLayout"
+
+const rhymeRules = [
+    "Race against time to get as many rhymes as the word of the day.",
+    "Example: ",
+    "If the word of the day is RAMBUNCTIOUS some rhymes could be Scrumptious, Compunctious, Fictious, Combustious, etc.",
+    "Ran out of time? Come back tomorrow and play again!"
+]
 
 export default function Layout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <div className="items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] ">
-      <Header />
-      {children}
-    </div>
-  );
+    return (
+        <SharedLayout gameMode="Rhyme" rules={rhymeRules}>
+            {children}
+        </SharedLayout>
+    );
 }

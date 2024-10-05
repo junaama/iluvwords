@@ -76,9 +76,8 @@ export default function Rhyme() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-3xl font-bold text-center mb-6">Rhyme</h1>
+    <div className="flex items-center ">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full">
         {!gameActive ? (
           <Button onClick={startGame} className="w-full">
             Start Game
