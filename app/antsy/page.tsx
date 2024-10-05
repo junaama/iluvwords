@@ -69,7 +69,6 @@ export default function Antsy() {
   return (
     <div className="flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full">
-        <h1 className="text-3xl font-bold text-center mb-6">Antsy</h1>
         {!gameActive ? (
           <Button onClick={startGame} className="w-full">
             Start Game
