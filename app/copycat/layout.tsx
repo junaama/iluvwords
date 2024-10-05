@@ -1,4 +1,3 @@
-import { Header } from "@/appcomponents/Header";
 import SharedLayout from "@/appcomponents/SharedLayout"
 
 const copyCatRules = [
