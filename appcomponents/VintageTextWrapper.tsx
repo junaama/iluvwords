@@ -14,7 +14,6 @@ export default function VintageTextWrapper({
     const wrapLetters = (text: string) => {
 
         return text.split('').map((letter, index) => {
-            console.log('letter, idx', letter, index)
 
             return (
             <span
