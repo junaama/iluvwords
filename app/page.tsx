@@ -21,11 +21,11 @@ export default function Home() {
   const { wordOfTheDay, definitionOfTheDay } = useWordContext()
 
   return (
-    <div className="items-center justify-items-center p-8 pb-16 gap-16 sm:p-20 bg-[#f0e7d5] m-auto relative overflow-hidden">
+    <div className="items-center justify-items-center p-8 pb-16 gap-16 sm:p-20 bg-[#f0e7d5] m-auto overflow-hidden">
       <Header hideWordDropdown hideGameDropdown />
-      <div className="flex flex-col items-center text-xl gap-4">
+      <div className="flex flex-col  text-md gap-2">
 
-        <div className="font-[family-name:var(--font-righteous)] text-4xl bg-gradient-to-r from-sky-300 via-orange-400 to-rose-500 inline-block text-transparent bg-clip-text">
+        <div className="font-[family-name:var(--font-righteous)] text-2xl bg-gradient-to-r from-sky-300 via-orange-400 to-rose-500 inline-block text-transparent bg-clip-text">
           {wordOfTheDay}
         </div>
         <div>
@@ -43,11 +43,13 @@ export default function Home() {
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 whileHover="hover"
                 variants={variants}>
+
                 <Image src={`/icons/${gamemode.icon}.svg`} alt="game icon" width="64" height="64" />
 
                 {!gamemode.locked ? <VintageTextWrapper><Link href={gamemode.link}>
                   {gamemode.name}
-                </Link></VintageTextWrapper> : <VintageTextWrapper>{gamemode.name}</VintageTextWrapper>}
+                </Link>
+                </VintageTextWrapper> : <VintageTextWrapper>{gamemode.name}</VintageTextWrapper>}
                 {gamemode.locked && <Image src={`/icons/lock.svg`} alt="lock icon" width="24" height="24" />}
               </motion.div >
             ))}
@@ -77,18 +79,6 @@ export default function Home() {
       margin: 0 auto;
       position: relative;
       overflow: hidden;
-    }
-
-    .vintage-newspaper::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-    
-      opacity: 0.1;
-      pointer-events: none;
     }
 
     .header {
