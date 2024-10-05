@@ -141,8 +141,8 @@ export default function WordCrushSaga() {
 
 
   return (
-    <div className=" flex items-center justify-center p-4">
-      <Card className="w-full max-w-lg">
+    <div className="flex items-center justify-center ">
+      <Card className="w-full ">
         <CardContent className="p-4">
           <div className="flex justify-between space-x-1">
             {grid.map((column, colIndex) => (
