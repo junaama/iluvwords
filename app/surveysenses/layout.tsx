@@ -1,14 +1,18 @@
-import { Header } from "@/appcomponents/Header";
+import SharedLayout from "@/appcomponents/SharedLayout"
+
+const sensesRules = [
+    "Compete with the world to get the most unique sensory description of the word of the day.",
+    "Come back tomorrow and play again with a new word!"
+]
 
 export default function Layout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <div className="items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] ">
-      <Header />
-      {children}
-    </div>
-  );
+    return (
+        <SharedLayout gameMode="Survey Senses" rules={sensesRules}>
+            {children}
+        </SharedLayout>
+    );
 }

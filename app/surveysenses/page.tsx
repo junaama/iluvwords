@@ -140,8 +140,8 @@ export default function Component() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+    <div className="flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full">
         {!gameComplete ? (
           <>
             <h1 className="text-3xl font-bold text-center mb-6">{mode}</h1>
@@ -194,9 +194,7 @@ export default function Component() {
           </>
         ) : (
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-6">Game Complete!</h1>
-            <p className="text-xl">Thank you for playing!</p>
-            <h2 className="text-2xl font-bold mt-6">Your Stats</h2>
+            <h2 className="text-2xl font-bold ">Your Stats</h2>
             <ul className="text-left mt-4">
               {allStats.map((stat, index) => (
                 <li key={index}>
