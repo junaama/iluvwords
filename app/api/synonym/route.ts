@@ -1,5 +1,3 @@
-// https://www.thesaurus.com/browse/tortile 
-
 import * as cheerio from 'cheerio';
 
 export async function GET(request: Request) {
