@@ -33,7 +33,7 @@ export default function Layout({
 
           </VintageTextWrapper>
           <VintageTextWrapper as="p">
-            If you've found all the words you could, come back tomorrow to continue building your city! Each city resets every Sunday at midnight.
+            If you&apos;ve found all the words you could, come back tomorrow to continue building your city! Each city resets every Sunday at midnight.
           </VintageTextWrapper>
         </section>
       </main>

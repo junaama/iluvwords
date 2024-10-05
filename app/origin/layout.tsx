@@ -13,7 +13,7 @@ export default function Layout({
     children: React.ReactNode;
 }>) {
     return (
-        <SharedLayout gameMode="Copycat" rules={originRules}>
+        <SharedLayout gameMode="Origin" rules={originRules}>
             {children}
         </SharedLayout>
     );

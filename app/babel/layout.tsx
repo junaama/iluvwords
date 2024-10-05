@@ -13,7 +13,7 @@ export default function Layout({
     children: React.ReactNode;
 }>) {
     return (
-        <SharedLayout gameMode="BABEL" rules={babelRules}>
+        <SharedLayout gameMode="Babel" rules={babelRules}>
             {children}
         </SharedLayout>
     );

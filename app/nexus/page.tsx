@@ -3,10 +3,9 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { useWordContext } from 'context/word-context'
-import RulesModal from "@/appcomponents/RulesModal"
 
 const wordSets = [
   ["apple", "core", "computer"],
@@ -60,15 +59,6 @@ export default function Nexus() {
   return (
     <div className="flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-lg">
-        {/* <CardHeader className="flex flex-row items-center justify-between"> */}
-          {/* <CardTitle className="text-2xl font-bold">Nexus</CardTitle> */}
-          {/* <div className="flex gap-2"> */}
-            {/* <RulesModal
-              gameTitle="Word Nexus"
-              rules="Given three words, provide a one-word clue that connects all three words. The clue should help others guess the given words, similar to the game Codenames, or reverse  NY Times Connections."
-            /> */}
-          {/* </div> */}
-        {/* </CardHeader> */}
         <CardContent className="py-8">
           <div className="mb-6">
             {/* <h2 className="text-lg font-semibold mb-2">Words to Connect:</h2> */}
