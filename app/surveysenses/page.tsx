@@ -13,6 +13,7 @@ type Stat = {
   description: string,
   rarityTier: string,
   percentageGuessed: number,
+  currentWord: string
 };
 
 export default function Component() {
@@ -32,7 +33,13 @@ export default function Component() {
     const storedStats = localStorage.getItem("gameStats");
     const storedModeIndex = localStorage.getItem("currentModeIndex");
 
+
     if (storedStats) {
+      if (JSON.parse(storedStats)[0].currentWord !== wordOfTheDay) {
+        // If it doesn't match, reset the game state
+        localStorage.removeItem("gameStats");
+        localStorage.removeItem("currentModeIndex");
+      }
       if (JSON.parse(storedStats).length >= 5) {
         setGameComplete(true)
       }
@@ -60,7 +67,7 @@ export default function Component() {
         throw new Error('Failed to calculate rarity score');
       }
       const data = await response.json();
-      return {rarityTier: data.rarityTier, percentageGuessed: data.percentageGuessed };
+      return { rarityTier: data.rarityTier, percentageGuessed: data.percentageGuessed };
     } catch (error) {
       console.error('Error calculating rarity score:', error);
       return null;
@@ -77,6 +84,7 @@ export default function Component() {
           description,
           rarityTier: data?.rarityTier,
           percentageGuessed: data?.percentageGuessed,
+          currentWord: wordOfTheDay
         };
         setRarityTier(data?.rarityTier)
         setPercentageGuessed(data?.percentageGuessed)
@@ -120,7 +128,6 @@ export default function Component() {
       setGameComplete(true)
     }
   }
-
 
   if (isPageLoading) {
     return (
